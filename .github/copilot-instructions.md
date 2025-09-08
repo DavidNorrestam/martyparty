@@ -1,0 +1,15 @@
+## Coding guidelines
+- Write logic in TypeScript, HTML, and CSS only.
+- Write clean, readable, and well-structured code.
+- Use modern, semantic HTML5 and responsive CSS.
+- Follow accessibility best practices: use proper labels, keyboard navigation, and ARIA attributes where appropriate.
+- Separate concerns: keep HTML, CSS, and TypeScript in separate files unless otherwise specified.
+- Add meaningful comments explaining key logic and structure.
+- Optimize for fast load times and minimal dependencies.
+- Ensure cross-browser compatibility and mobile responsiveness.
+- Use descriptive variable and function names.
+- Avoid code duplication and follow DRY (Don't Repeat Yourself) principles.
+- Validate user input and handle errors gracefully.
+- Write modular, reusable functions and components.
+- Follow consistent code formatting and indentation.
+- Include a README.md with setup and deployment instructions if creating a new project.

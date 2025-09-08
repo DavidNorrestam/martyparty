@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Quiz Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <main id="app" tabindex="-1"></main>
+    <script type="module">
+        // Dynamically load the start screen on first page load
+        fetch('start.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('app').innerHTML = html;
+            });
+    </script>
+    <script type="module" src="main.ts"></script>
+</body>
+
+</html>
