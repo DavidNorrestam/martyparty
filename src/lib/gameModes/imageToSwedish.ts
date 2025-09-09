@@ -5,9 +5,9 @@ export const imageToSwedish: GameMode = {
     id: 'image-to-swedish',
     label: 'Image → Swedish name',
     generateQuestions(plants) {
-        // Pick 5 random plants and return as questions
+        // Shuffle and use all plants for questions
         const shuffled = [...plants].sort(() => Math.random() - 0.5);
-        return shuffled.slice(0, 5).map(plant => ({
+        return shuffled.map(plant => ({
             ...plant,
             images: plant.images || [], // Ensure images array exists
             answer: plant.swedishName

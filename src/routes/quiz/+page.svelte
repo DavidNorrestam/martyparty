@@ -11,14 +11,14 @@
     import { asset, resolve } from '$app/paths';
 
   let loading = true;
-  let mode: GameMode | undefined = undefined;
+  let mode: GameMode<any> | undefined = undefined;
 
   // For test harness: expose mode selection
   let selectedModeId: string = '';
 
 
 
-  async function fetchImagesForPlant(plant) {
+  async function fetchImagesForPlant(plant: { latinName: string }) {
     // Remove quoted substrings and ' sp.' or ' sp' at the end, then trim whitespace
     let latin = plant.latinName
       .replace(/"[^"]*"|'[^']*'/g, '')
@@ -36,10 +36,10 @@
       // Step 2: Fetch taxon details to get taxon_photos
       const taxonResp = await fetch(`https://api.inaturalist.org/v1/taxa/${taxonId}`);
       const taxonData = await taxonResp.json();
-      let photos = [];
+      let photos: string[] = [];
       if (taxonData.results && taxonData.results.length > 0 && taxonData.results[0].taxon_photos) {
         photos = taxonData.results[0].taxon_photos
-          .map((p) => p.photo?.medium_url || p.photo?.url)
+          .map((p: any) => p.photo?.medium_url || p.photo?.url)
           .filter(Boolean);
       }
       let uniquePhotos = Array.from(new Set(photos));
@@ -50,7 +50,7 @@
           const obsData = await obsResp.json();
           if (obsData.results && obsData.results.length > 0) {
             let obsPhotos = obsData.results
-              .flatMap((r) => (r.photos || []).map((p) => p.medium_url || p.url))
+              .flatMap((r: any) => (r.photos || []).map((p: any) => p.medium_url || p.url))
               .filter(Boolean);
             for (let i = obsPhotos.length - 1; i > 0; i--) {
               const j = Math.floor(Math.random() * (i + 1));
@@ -81,29 +81,30 @@
   }
 
   async function startQuizWithMode(modeId: string) {
-    mode = gameModes.find(m => m.id === modeId) || gameModes[0];
+    const foundMode = gameModes.find(m => m.id === modeId) || gameModes[0];
+    mode = foundMode;
     selectedModeId = mode.id;
     loading = true;
     const res = await fetch(asset('/plants.json'));
     let data = await res.json();
-    // If image-to-swedish mode, fetch images for each plant
-    if (mode.id === 'image-to-swedish') {
-      data = await Promise.all(data.map(async (plant) => {
+    // If mode requires images, fetch images for each plant
+    if (mode && (mode.id === 'image-to-swedish' || mode.id === 'imageToNameFreetext')) {
+      data = await Promise.all(data.map(async (plant: any) => {
         const images = await fetchImagesForPlant(plant);
         return { ...plant, images };
       }));
     }
-    quiz.start(data, mode);
+    if (mode) quiz.start(data, mode);
     loading = false;
   }
 
 
-  onMount(async () => {
+  onMount(() => {
     // Read mode from query param
     const urlMode = get(page).url.searchParams.get('mode');
     const initialModeId = urlMode || gameModes[0].id;
     selectedModeId = initialModeId;
-    await startQuizWithMode(initialModeId);
+    startQuizWithMode(initialModeId);
 
     const unsub = quiz.subscribe(state => {
       if (state.finished) {
@@ -127,7 +128,7 @@
 
   // Use images from the current question if available
   let imageUrls: string[] = [];
-  $: if (mode?.id === 'image-to-swedish' && currentState.questions.length && !currentState.finished) {
+  $: if ((mode && (mode.id === 'image-to-swedish' || mode.id === 'imageToNameFreetext')) && currentState.questions.length && !currentState.finished) {
     imageUrls = currentState.questions[currentState.current]?.images || [];
   } else {
     imageUrls = [];
@@ -140,7 +141,7 @@
     <p>Laddar frågor...</p>
   {:else if currentState.questions.length && !currentState.finished}
     <QuizProgress current={currentState.current + 1} total={currentState.questions.length} />
-    {#if mode?.id === 'image-to-swedish'}
+    {#if mode?.id === 'image-to-swedish' || mode?.id === 'imageToNameFreetext'}
       <div style="text-align:center;margin-bottom:1em;display:flex;gap:1em;justify-content:center;overflow-x:auto;">
         {#if imageUrls.length > 0}
           {#each imageUrls as url}
@@ -152,13 +153,8 @@
           </div>
         {/if}
       </div>
-      <QuizQuestion
-        question={currentState.questions[currentState.current]}
-        options={getOptions(currentState.current)}
-        mode={mode}
-        on:answer={e => handleAnswer(e.detail)}
-      />
-    {:else if mode?.id === 'swedish-to-latin'}
+    {/if}
+    {#if mode}
       <QuizQuestion
         question={currentState.questions[currentState.current]}
         options={getOptions(currentState.current)}

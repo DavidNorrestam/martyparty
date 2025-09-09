@@ -4,9 +4,9 @@ export const swedishToLatin: GameMode = {
     id: 'swedish-to-latin',
     label: 'Swedish name → Latin name',
     generateQuestions(plants) {
-        // Pick 5 random plants and return as questions
+        // Shuffle and use all plants for questions
         const shuffled = [...plants].sort(() => Math.random() - 0.5);
-        return shuffled.slice(0, 5).map(plant => ({
+        return shuffled.map(plant => ({
             ...plant,
             question: plant.swedishName,
             answer: plant.latinName

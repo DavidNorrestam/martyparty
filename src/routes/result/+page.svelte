@@ -9,6 +9,14 @@
   $: total = $quiz.questions.length;
   $: mode = $quiz.mode;
 
+  function parseFreetextAnswer(answer: string): { swedish: string; latin: string } | null {
+    try {
+      return JSON.parse(answer);
+    } catch {
+      return null;
+    }
+  }
+
   async function tryAgain() {
     // Always use the current mode from the quiz store
     const currentMode = $quiz.mode;
@@ -18,7 +26,7 @@
     // If image-to-swedish mode, fetch images for each plant (mimic quiz/+page.svelte logic)
     if (currentMode.id === 'image-to-swedish') {
       // Optionally, refactor to share logic with quiz/+page.svelte
-      data = await Promise.all(data.map(async (plant) => {
+      data = await Promise.all(data.map(async (plant: any) => {
         // Fallback: just pass through images if present
         return { ...plant, images: plant.images || [] };
       }));
@@ -43,14 +51,39 @@
         {#if !ans.correct}
           <li style="margin-bottom:1.5em;padding:1em;background:#f8fafc;border-radius:10px;box-shadow:0 1px 4px #0001;">
             <div><b>Fråga:</b> {ans.question.swedishName} ({ans.question.latinName})</div>
-            {#if mode.id === 'image-to-swedish' && ans.question.images && ans.question.images.length}
+            {#if (mode.id === 'image-to-swedish' || mode.id === 'imageToNameFreetext') && ans.question.images && ans.question.images.length}
               <div style="display:flex;gap:1em;margin:0.5em 0;">
                 {#each ans.question.images as url}
                   <img src={url} alt="Växtbild" style="max-width:120px;max-height:140px;width:100%;height:140px;object-fit:cover;border-radius:8px;box-shadow:0 1px 4px #0001;background:#e5e7eb;" />
                 {/each}
               </div>
             {/if}
-            <div><b>Ditt svar:</b> {ans.answer}</div>
+            <div><b>Ditt svar:</b>
+              {#if mode.id === 'imageToNameFreetext'}
+                {#if ans.answer}
+                  {#if parseFreetextAnswer(ans.answer)}
+                    {parseFreetextAnswer(ans.answer)?.swedish} / {parseFreetextAnswer(ans.answer)?.latin}
+                  {:else}
+                    {ans.answer}
+                  {/if}
+                {:else}
+                  {ans.answer}
+                {/if}
+              {:else}
+                {ans.answer}
+              {/if}
+            </div>
+<script lang="ts">
+  // ...existing imports and code...
+
+  function parseAnswer(answer: string): { swedish: string; latin: string } | null {
+    try {
+      return JSON.parse(answer);
+    } catch {
+      return null;
+    }
+  }
+</script>
             <div><b>Rätt svar:</b> {ans.question.swedishName} / {ans.question.latinName}</div>
           </li>
         {/if}

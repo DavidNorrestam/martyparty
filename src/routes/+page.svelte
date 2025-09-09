@@ -11,7 +11,7 @@
 	<h1>Växtquiz</h1>
 	<p style="text-align: center;">Välkommen till växtquizet! Testa dina kunskaper om växter.</p>
 	<div style="margin-bottom:1em; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; width: 100%; max-width: 340px;">
-		<div style="display: flex; gap: 0.5rem; width: 100%; justify-content: center;">
+		<div style="display: flex; flex-direction: column; gap: 0.7rem; width: 100%; justify-content: center;">
 			<button
 				type="button"
 				class="mode-toggle"
@@ -25,6 +25,13 @@
 				on:click={() => { mode = 'image-to-swedish'; startQuiz(); }}
 			>
 				Gissa svenskt namn från bild
+			</button>
+			<button
+				type="button"
+				class="mode-toggle"
+				on:click={() => { mode = 'imageToNameFreetext'; startQuiz(); }}
+			>
+				Bild till namn (fritext)
 			</button>
 		</div>
 	</div>
