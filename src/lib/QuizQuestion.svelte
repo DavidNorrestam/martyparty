@@ -1,9 +1,10 @@
 
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
+  import type { GameMode } from './gameModes';
   export let question: { swedishName: string; latinName: string };
   export let options: string[];
-  export let mode: 'latin' | 'image-to-swedish' = 'latin';
+  export let mode: GameMode;
   const dispatch = createEventDispatcher();
   function handleClick(option: string) {
     dispatch('answer', option);
@@ -11,9 +12,9 @@
 </script>
 
 <div class="quiz-question">
-  {#if mode === 'image-to-swedish'}
+  {#if mode?.id === 'image-to-swedish'}
     <h3>Vad är det svenska namnet för växten på bilden?</h3>
-  {:else}
+  {:else if mode?.id === 'swedish-to-latin'}
     <h3>Vad är det latinska namnet för <span>{question.swedishName}</span>?</h3>
   {/if}
   <ul class="options-grid">

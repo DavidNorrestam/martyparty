@@ -1,19 +1,30 @@
+
 import { writable } from 'svelte/store';
+import type { GameMode, BaseQuestion } from '../gameModes';
 
 export interface Plant {
     swedishName: string;
     latinName: string;
+    images?: string[];
+    [key: string]: any;
 }
 
-export interface QuizState {
-    questions: Plant[];
+
+export interface QuizAnswer<Q extends BaseQuestion = BaseQuestion> {
+    answer: string;
+    correct: boolean;
+    question: Q;
+}
+
+export interface QuizState<Q extends BaseQuestion = BaseQuestion> {
+    questions: Q[];
     current: number;
     score: number;
-    answers: string[];
+    answers: QuizAnswer<Q>[];
     finished: boolean;
-    images?: string[][]; // Array of image URLs per question (optional)
-    mode?: 'latin' | 'image-to-swedish';
+    mode?: GameMode<Q>;
 }
+
 
 function createQuizStore() {
     const { subscribe, set, update } = writable<QuizState>({
@@ -21,37 +32,41 @@ function createQuizStore() {
         current: 0,
         score: 0,
         answers: [],
-        finished: false
+        finished: false,
+        mode: undefined
     });
 
     return {
         subscribe,
-        start: (questions: Plant[], images?: string[][], mode?: 'latin' | 'image-to-swedish') => set({
-            questions,
-            current: 0,
-            score: 0,
-            answers: [],
-            finished: false,
-            images: images || [],
-            mode
-        }),
+        /**
+         * Start a new quiz with the selected game mode
+         * @param plants Plant data
+         * @param mode GameMode object
+         */
+        start: (plants: Plant[], mode: GameMode) => {
+            const questions = mode.generateQuestions(plants);
+            set({
+                questions,
+                current: 0,
+                score: 0,
+                answers: [],
+                finished: false,
+                mode
+            });
+        },
+        /**
+         * Submit an answer for the current question
+         * @param answer User's answer
+         */
         answer: (answer: string) => update(state => {
-            // Determine mode from URL
-            let mode: 'latin' | 'image-to-swedish' = 'latin';
-            try {
-                if (typeof window !== 'undefined') {
-                    const urlMode = new URL(window.location.href).searchParams.get('mode');
-                    if (urlMode === 'image-to-swedish') mode = 'image-to-swedish';
-                }
-            } catch { }
-            let correct = false;
-            if (mode === 'image-to-swedish') {
-                correct = state.questions[state.current].swedishName === answer;
-            } else {
-                correct = state.questions[state.current].latinName === answer;
-            }
+            if (!state.mode) return state;
+            const currentQuestion = state.questions[state.current];
+            const correct = state.mode.checkAnswer(currentQuestion, answer);
             const score = state.score + (correct ? 1 : 0);
-            const answers = [...state.answers, answer];
+            const answers = [
+                ...state.answers,
+                { answer, correct, question: currentQuestion }
+            ];
             const finished = state.current + 1 >= state.questions.length;
             return {
                 ...state,
@@ -67,7 +82,6 @@ function createQuizStore() {
             score: 0,
             answers: [],
             finished: false,
-            images: [],
             mode: undefined
         })
     };

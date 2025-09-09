@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	let mode: 'latin' | 'image-to-swedish' = 'latin';
+		let mode: 'swedish-to-latin' | 'image-to-swedish' = 'swedish-to-latin';
 	function startQuiz() {
 		goto(`${resolve('/quiz')}?mode=${mode}`);
 	}
@@ -15,7 +15,7 @@
 			<button
 				type="button"
 				class="mode-toggle"
-				on:click={() => { mode = 'latin'; startQuiz(); }}
+				on:click={() => { mode = 'swedish-to-latin'; startQuiz(); }}
 			>
 				Gissa latinskt namn
 			</button>

@@ -1,5 +1,3 @@
-
-
 <script lang="ts">
   import { quiz } from '$lib/stores/quiz';
   import QuizResult from '$lib/QuizResult.svelte';
@@ -9,25 +7,24 @@
   import { asset, resolve } from '$app/paths';
   $: score = $quiz.score;
   $: total = $quiz.questions.length;
-  $: mode = $quiz.mode || 'latin';
-
+  $: mode = $quiz.mode;
 
   async function tryAgain() {
-    // Always get mode from current URL
-    let mode: 'latin' | 'image-to-swedish' = 'latin';
-    try {
-      if (typeof window !== 'undefined') {
-        const urlMode = new URL(window.location.href).searchParams.get('mode');
-        if (urlMode === 'image-to-swedish') mode = 'image-to-swedish';
-      }
-    } catch {}
-    // Fetch questions and restart quiz in same mode
-    
-
+    // Always use the current mode from the quiz store
+    const currentMode = $quiz.mode;
+    if (!currentMode) return;
     const res = await fetch(asset('/plants.json'));
-    const data = await res.json();
-    quiz.start(data);
-    goto(`${resolve('/quiz')}?mode=${mode}`);
+    let data = await res.json();
+    // If image-to-swedish mode, fetch images for each plant (mimic quiz/+page.svelte logic)
+    if (currentMode.id === 'image-to-swedish') {
+      // Optionally, refactor to share logic with quiz/+page.svelte
+      data = await Promise.all(data.map(async (plant) => {
+        // Fallback: just pass through images if present
+        return { ...plant, images: plant.images || [] };
+      }));
+    }
+    quiz.start(data, currentMode);
+    goto(`${resolve('/quiz')}?mode=${currentMode.id}`);
   }
 
   function goHome() {
@@ -39,22 +36,22 @@
 <main class="centered-main">
   <QuizResult {score} {total} on:goHome={goHome} />
 
-  {#if $quiz.questions.length > 0 && $quiz.answers.length === $quiz.questions.length}
+  {#if $quiz.questions.length > 0 && $quiz.answers.length === $quiz.questions.length && mode}
     <h3 style="margin-top:2rem;">Felaktiga svar</h3>
     <ul style="width:100%;max-width:420px;padding:0;list-style:none;">
-      {#each $quiz.questions as q, i}
-        {#if ($quiz.answers[i] !== q.swedishName && $quiz.answers[i] !== q.latinName)}
+      {#each $quiz.answers as ans, i}
+        {#if !ans.correct}
           <li style="margin-bottom:1.5em;padding:1em;background:#f8fafc;border-radius:10px;box-shadow:0 1px 4px #0001;">
-            <div><b>Fråga:</b> {q.swedishName} ({q.latinName})</div>
-            {#if mode === 'image-to-swedish' && $quiz.images && $quiz.images[i]?.length}
+            <div><b>Fråga:</b> {ans.question.swedishName} ({ans.question.latinName})</div>
+            {#if mode.id === 'image-to-swedish' && ans.question.images && ans.question.images.length}
               <div style="display:flex;gap:1em;margin:0.5em 0;">
-                {#each $quiz.images[i] as url}
+                {#each ans.question.images as url}
                   <img src={url} alt="Växtbild" style="max-width:120px;max-height:140px;width:100%;height:140px;object-fit:cover;border-radius:8px;box-shadow:0 1px 4px #0001;background:#e5e7eb;" />
                 {/each}
               </div>
             {/if}
-            <div><b>Ditt svar:</b> {$quiz.answers[i]}</div>
-            <div><b>Rätt svar:</b> {q.swedishName} / {q.latinName}</div>
+            <div><b>Ditt svar:</b> {ans.answer}</div>
+            <div><b>Rätt svar:</b> {ans.question.swedishName} / {ans.question.latinName}</div>
           </li>
         {/if}
       {/each}
