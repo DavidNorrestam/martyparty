@@ -7,6 +7,7 @@
   import QuizProgress from '$lib/QuizProgress.svelte';
   import { page } from '$app/stores';
   import { get } from 'svelte/store';
+    import { asset, resolve } from '$app/paths';
 
   let loading = true;
   let mode: 'latin' | 'image-to-swedish' = 'latin';
@@ -19,13 +20,13 @@
 
     const unsub = quiz.subscribe(state => {
       if (state.finished) {
-        goto('/result');
+        goto(resolve('/result'));
       }
     });
     quiz.subscribe(state => {
       if (state.questions.length > 0) loading = false;
     });
-    const res = await fetch('/plants.json');
+    const res = await fetch(asset('/plants.json'));
     let data = await res.json();
     // Shuffle the questions (plants) array
     for (let i = data.length - 1; i > 0; i--) {
@@ -153,14 +154,14 @@
 <main>
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1em;">
     <h2 style="margin:0;">Quizfrågor</h2>
-    <button on:click={() => goto('/')} style="padding:0.3em 1em;font-size:1em;">Hem</button>
+    <button on:click={() => goto(resolve('/'))} style="padding:0.3em 1em;font-size:1em;">Hem</button>
   </div>
   {#if loading}
     <p>Laddar frågor...</p>
   {:else if currentState.questions.length && !currentState.finished}
     <QuizProgress current={currentState.current + 1} total={currentState.questions.length} />
     {#if mode === 'image-to-swedish'}
-      <div style="text-align:center;margin-bottom:1em;display:flex;gap:1em;justify-content:center;">
+      <div style="text-align:center;margin-bottom:1em;display:flex;gap:1em;justify-content:center;overflow-x:auto;">
         {#if imageUrls.length > 0}
           {#each imageUrls as url}
             <img src={url} alt="Växtbild" style="max-width:260px;max-height:320px;width:100%;height:320px;object-fit:cover;border-radius:12px;box-shadow:0 2px 12px #0002;background:#e5e7eb;" />

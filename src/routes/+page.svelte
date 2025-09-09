@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	let mode: 'latin' | 'image-to-swedish' = 'latin';
 	function startQuiz() {
-		goto(`/quiz?mode=${mode}`);
+		goto(`${resolve('/quiz')}?mode=${mode}`);
 	}
 </script>
 

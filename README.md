@@ -36,3 +36,18 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+
+## Deploying to GitHub Pages
+
+1. Install the `gh-pages` package if you haven't already:
+	```sh
+	npm install --save-dev gh-pages
+	```
+2. Build and deploy:
+	```sh
+	npm run deploy
+	```
+3. In your repository settings on GitHub, set Pages to deploy from the `gh-pages` branch.
+
+The app will be available at `https://<your-username>.github.io/<REPO_NAME>/`.

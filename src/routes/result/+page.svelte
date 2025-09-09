@@ -6,6 +6,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { get } from 'svelte/store';
+  import { asset, resolve } from '$app/paths';
   $: score = $quiz.score;
   $: total = $quiz.questions.length;
   $: mode = $quiz.mode || 'latin';
@@ -21,15 +22,17 @@
       }
     } catch {}
     // Fetch questions and restart quiz in same mode
-    const res = await fetch('/plants.json');
+    
+
+    const res = await fetch(asset('/plants.json'));
     const data = await res.json();
     quiz.start(data);
-    goto(`/quiz?mode=${mode}`);
+    goto(`${resolve('/quiz')}?mode=${mode}`);
   }
 
   function goHome() {
     quiz.reset();
-    goto('/');
+    goto(resolve('/'));
   }
 </script>
 
