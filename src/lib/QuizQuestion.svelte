@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import { Button } from "$lib/components/ui/button/index.js";
+  import { Input } from "$lib/components/ui/input";
   import * as Carousel from "$lib/components/ui/carousel/index.js";
   import type { GameMode } from "./gameModes";
   export let question: {
@@ -29,6 +30,42 @@
     );
     swedishInput = "";
     latinInput = "";
+    // Refocus after submit (ensure DOM is ready)
+    setTimeout(() => {
+      const el = document.querySelector<HTMLInputElement>(
+        ".freetext-input.swedish",
+      );
+      el?.focus();
+    }, 0);
+  }
+
+  // Focus Swedish input on mount and when question changes
+  import { afterUpdate, onMount } from "svelte";
+  onMount(() => {
+    if (mode?.id === "imageToNameFreetext") {
+      const el = document.querySelector<HTMLInputElement>(
+        ".freetext-input.swedish",
+      );
+      el?.focus();
+    }
+  });
+
+  // Focus Swedish input only when question changes and mode is imageToNameFreetext
+  let prevQuestionKey = "";
+  $: {
+    const key =
+      mode?.id === "imageToNameFreetext" && question
+        ? `${question.swedishName}|${question.latinName}`
+        : "";
+    if (key && key !== prevQuestionKey) {
+      prevQuestionKey = key;
+      setTimeout(() => {
+        const el = document.querySelector<HTMLInputElement>(
+          ".freetext-input.swedish",
+        );
+        el?.focus();
+      }, 0);
+    }
   }
 </script>
 
@@ -92,15 +129,15 @@
     </div>
   {:else if mode?.id === "imageToNameFreetext"}
     <form on:submit|preventDefault={handleFreetextSubmit} class="freetext-form">
-      <input
+      <Input
         type="text"
         placeholder="Svenskt namn"
         bind:value={swedishInput}
         required
         autocomplete="off"
-        class="freetext-input"
+        class="freetext-input swedish"
       />
-      <input
+      <Input
         type="text"
         placeholder="Latinskt namn"
         bind:value={latinInput}
