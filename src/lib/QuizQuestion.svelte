@@ -1,57 +1,104 @@
-
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-  import type { GameMode } from './gameModes';
-  export let question: { swedishName: string; latinName: string; images?: string[] };
+  import { createEventDispatcher } from "svelte";
+  import { Button } from "$lib/components/ui/button/index.js";
+  import * as Carousel from "$lib/components/ui/carousel/index.js";
+  import type { GameMode } from "./gameModes";
+  export let question: {
+    swedishName: string;
+    latinName: string;
+    images?: string[];
+  } | null;
   export let options: string[];
   export let mode: GameMode;
+  export let loadingImages: boolean = false;
   const dispatch = createEventDispatcher();
 
   // For freetext mode
-  let swedishInput = '';
-  let latinInput = '';
+  let swedishInput = "";
+  let latinInput = "";
 
   function handleClick(option: string) {
-    dispatch('answer', option);
+    dispatch("answer", option);
   }
 
   function handleFreetextSubmit(e: Event) {
     e.preventDefault();
-    dispatch('answer', JSON.stringify({ swedish: swedishInput, latin: latinInput }));
-    swedishInput = '';
-    latinInput = '';
+    dispatch(
+      "answer",
+      JSON.stringify({ swedish: swedishInput, latin: latinInput }),
+    );
+    swedishInput = "";
+    latinInput = "";
   }
 </script>
 
 <div class="quiz-question">
-  {#if mode?.id === 'image-to-swedish'}
+  <!-- Question prompt and images -->
+  {#if mode?.id === "image-to-swedish" || mode?.id === "imageToNameFreetext"}
+    {#if question?.images && question.images.length > 0}
+      <div class="quiz-carousel-wrapper">
+        <Carousel.Root opts={{ align: "center", loop: true }}>
+          <Carousel.Content class="-ml-4">
+            {#each question.images as url}
+              <Carousel.Item class="carousel-peek">
+                <img src={url} alt="Växtbild" class="quiz-carousel-image" />
+              </Carousel.Item>
+            {/each}
+          </Carousel.Content>
+          <Carousel.Previous
+            class="carousel-nav-btn prev"
+            aria-label="Föregående bild"
+          />
+          <Carousel.Next
+            class="carousel-nav-btn next"
+            aria-label="Nästa bild"
+          />
+        </Carousel.Root>
+      </div>
+    {:else if loadingImages}
+      <div class="quiz-image-placeholder">
+        <span>Laddar bild...</span>
+      </div>
+    {/if}
+  {/if}
+
+  {#if mode?.id === "image-to-swedish"}
     <h3>Vad är det svenska namnet för växten på bilden?</h3>
-    <ul class="options-grid">
+  {:else if mode?.id === "swedish-to-latin"}
+    <h3>
+      Vad är det latinska namnet för <span>{question?.swedishName}</span>?
+    </h3>
+  {:else if mode?.id === "imageToNameFreetext"}
+    <h3>
+      Vad heter växten på bilderna? <span class="quiz-question-desc"
+        >Ange både svenska och latinska namnet.</span
+      >
+    </h3>
+  {/if}
+
+  <!-- Divider between question and answer -->
+  <div class="quiz-divider"></div>
+
+  <!-- Answer section -->
+  {#if mode?.id === "image-to-swedish" || mode?.id === "swedish-to-latin"}
+    <div class="answer-grid">
       {#each options as option}
-        <li>
-          <button type="button" class="mode-toggle" on:click={() => handleClick(option)}>{option}</button>
-        </li>
+        <Button
+          type="button"
+          class="mode-toggle answer-btn"
+          onclick={() => handleClick(option)}>{option}</Button
+        >
       {/each}
-    </ul>
-  {:else if mode?.id === 'swedish-to-latin'}
-    <h3>Vad är det latinska namnet för <span>{question.swedishName}</span>?</h3>
-    <ul class="options-grid">
-      {#each options as option}
-        <li>
-          <button type="button" class="mode-toggle" on:click={() => handleClick(option)}>{option}</button>
-        </li>
-      {/each}
-    </ul>
-  {:else if mode?.id === 'imageToNameFreetext'}
-    <h3>Vad heter växten på bilderna? Ange både svenska och latinska namnet.</h3>
-    <form on:submit|preventDefault={handleFreetextSubmit} style="display:flex;flex-direction:column;gap:1em;align-items:center;max-width:340px;width:100%;margin:0 auto;">
+    </div>
+  {:else if mode?.id === "imageToNameFreetext"}
+    <form on:submit|preventDefault={handleFreetextSubmit} class="freetext-form">
       <input
         type="text"
         placeholder="Svenskt namn"
         bind:value={swedishInput}
         required
         autocomplete="off"
-        style="font-size:1.1em;padding:0.7em 1em;border-radius:8px;border:1px solid #ccc;width:100%;"
+        class="freetext-input"
       />
       <input
         type="text"
@@ -59,46 +106,161 @@
         bind:value={latinInput}
         required
         autocomplete="off"
-        style="font-size:1.1em;padding:0.7em 1em;border-radius:8px;border:1px solid #ccc;width:100%;"
+        class="freetext-input"
       />
-      <button type="submit" class="mode-toggle" style="width:100%;">Svara</button>
+      <Button type="submit" class="mode-toggle" style="width:100%;"
+        >Svara</Button
+      >
     </form>
   {/if}
 </div>
 
 <style>
-.quiz-question {
-  margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.quiz-question h3 {
-  font-size: 1.2rem;
-  text-align: center;
-}
-.options-grid {
-  list-style: none;
-  padding: 0;
-  width: 100%;
-  max-width: 340px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-.options-grid li {
-  width: 100%;
-  display: flex;
-}
-.quiz-question li {
-  width: 100%;
-}
-.mode-toggle {
-  width: 100%;
-  min-height: 3.2rem;
-  font-size: 1.12rem;
-  padding: 0.9rem 1.2rem;
-  font-weight: 500;
-  border-radius: 10px;
-}
+  .quiz-question {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .quiz-question h3 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .quiz-question-desc {
+    display: block;
+    font-size: 0.95em;
+    font-weight: 400;
+    color: #666;
+    margin-top: 0.3em;
+  }
+  .quiz-carousel-wrapper {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 1em;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .quiz-carousel-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px #0002;
+    background: #e5e7eb;
+    max-width: 340px;
+    max-height: 220px;
+    margin: 0 auto;
+    display: block;
+  }
+  .carousel-peek {
+    min-width: 70%;
+    max-width: 340px;
+    flex: 0 0 70%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
+    transition: transform 0.3s;
+  }
+  @media (min-width: 600px) {
+    .carousel-peek {
+      min-width: 50%;
+      flex: 0 0 50%;
+    }
+  }
+  @media (min-width: 900px) {
+    .carousel-peek {
+      min-width: 33%;
+      flex: 0 0 33%;
+    }
+  }
+  .carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px #0002;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: #333;
+    transition: background 0.2s;
+  }
+  .carousel-nav-btn.prev {
+    left: 0.2rem;
+  }
+  .carousel-nav-btn.next {
+    right: 0.2rem;
+  }
+  .quiz-image-placeholder {
+    display: inline-block;
+    width: 100%;
+    max-width: 220px;
+    height: 220px;
+    border-radius: 12px;
+    background: #e5e7eb;
+    box-shadow: 0 2px 12px #0002;
+    position: relative;
+  }
+  .quiz-image-placeholder span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #888;
+  }
+  .quiz-divider {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #e5e7eb 0%, #cbd5e1 100%);
+    margin: 1em 0 1.2em 0;
+    border-radius: 2px;
+    opacity: 0.7;
+  }
+  .answer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+    width: 100%;
+    max-width: 340px;
+    margin-bottom: 1em;
+  }
+  .answer-btn {
+    width: 100%;
+    height: 3.2em;
+    font-size: 1em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .freetext-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+    max-width: 340px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .freetext-input {
+    font-size: 1.1em;
+    padding: 0.7em 1em;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+  @media (max-width: 600px) {
+    .answer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

@@ -1,60 +1,56 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { resolve } from '$app/paths';
-		let mode: 'swedish-to-latin' | 'image-to-swedish' = 'swedish-to-latin';
+	import { goto } from "$app/navigation";
+	import { resolve } from "$app/paths";
+	import { Button } from "$lib/components/ui/button/index.js";
+	import * as Card from "$lib/components/ui/card/index.js";
+	let mode: "swedish-to-latin" | "image-to-swedish" | "imageToNameFreetext" =
+		"swedish-to-latin";
 	function startQuiz() {
-		goto(`${resolve('/quiz')}?mode=${mode}`);
+		goto(`${resolve("/quiz")}?mode=${mode}`);
 	}
 </script>
 
-<main style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-	<h1>Växtquiz</h1>
-	<p style="text-align: center;">Välkommen till växtquizet! Testa dina kunskaper om växter.</p>
-	<div style="margin-bottom:1em; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; width: 100%; max-width: 340px;">
-		<div style="display: flex; flex-direction: column; gap: 0.7rem; width: 100%; justify-content: center;">
-			<button
-				type="button"
-				class="mode-toggle"
-				on:click={() => { mode = 'swedish-to-latin'; startQuiz(); }}
+<main class="flex flex-col items-center min-h-screen pt-8 sm:pt-16 md:pt-24">
+	<Card.Root class="w-full max-w-md">
+		<Card.Header>
+			<Card.Title class="text-3xl font-bold text-center"
+				>Växtquiz</Card.Title
+			>
+			<Card.Description class="text-lg text-center"
+				>Välkommen till växtquizet! Testa dina kunskaper om växter.</Card.Description
+			>
+		</Card.Header>
+		<Card.Content class="flex flex-col gap-3">
+			<Button
+				variant="default"
+				onclick={() => {
+					mode = "swedish-to-latin";
+					startQuiz();
+				}}
+				class="w-full"
 			>
 				Gissa latinskt namn
-			</button>
-			<button
-				type="button"
-				class="mode-toggle"
-				on:click={() => { mode = 'image-to-swedish'; startQuiz(); }}
+			</Button>
+			<Button
+				variant="default"
+				onclick={() => {
+					mode = "image-to-swedish";
+					startQuiz();
+				}}
+				class="w-full"
 			>
 				Gissa svenskt namn från bild
-			</button>
-			<button
-				type="button"
-				class="mode-toggle"
-				on:click={() => { mode = 'imageToNameFreetext'; startQuiz(); }}
+			</Button>
+			<Button
+				variant="default"
+				onclick={() => {
+					mode = "imageToNameFreetext";
+					startQuiz();
+				}}
+				class="w-full"
 			>
 				Bild till namn (fritext)
-			</button>
-		</div>
-	</div>
+			</Button>
+		</Card.Content>
+	</Card.Root>
 </main>
-
-<style>
-main {
-	min-height: 60vh;
-}
-.mode-toggle {
-	background: #f1f5f9;
-	border: 1.5px solid #e5e7eb;
-	border-radius: 8px;
-	padding: 0.75rem 1rem;
-	font-size: 1rem;
-	font-weight: 500;
-	cursor: pointer;
-	transition: background 0.12s, border 0.12s, color 0.12s;
-	outline: none;
-	color: #222;
-	min-width: 120px;
-}
-.mode-toggle:focus {
-	box-shadow: 0 0 0 2px #93c5fd;
-}
-</style>
