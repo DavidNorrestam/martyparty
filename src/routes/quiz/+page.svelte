@@ -155,36 +155,35 @@
 </script>
 
 <main>
-  <header class="quiz-header">
-    <div class="quiz-header__left">
-      <Button onclick={() => goto(resolve("/"))} class="home-btn">Hem</Button>
-    </div>
-    <div class="quiz-header__center">
-      <div
-        class:progress-inactive={loading ||
-          !currentState.questions.length ||
-          currentState.finished}
-        aria-hidden={loading ||
-          !currentState.questions.length ||
-          currentState.finished}
-        style="width:100%;display:flex;justify-content:center;"
-      >
-        <QuizProgress
-          current={currentState.current + 1}
-          total={currentState.questions.length}
-        />
-      </div>
-    </div>
-    <div class="quiz-header__right"></div>
-  </header>
+  <!-- Floating Home Button -->
+  <Button
+    onclick={() => goto(resolve("/"))}
+    class="floating-home-btn"
+    aria-label="Hem"
+  >
+    Hem
+  </Button>
 
   {#if loading}
-    <p class="quiz-loading">Laddar frågor...</p>
+    <div class="quiz-loading-overlay">
+      <div class="spinner"></div>
+      <div class="loading-text">
+        Laddar frågor<span class="dot one">.</span><span class="dot two">.</span
+        ><span class="dot three">.</span>
+      </div>
+    </div>
   {:else if currentState.questions.length && !currentState.finished}
     <div style="display: flex; justify-content: center; margin-top: 2em;">
       <Card
-        style="max-width: 480px; width: 100%; box-shadow: 0 2px 16px #0001;"
+        style="max-width: 480px; width: 100%; min-height: 420px; box-shadow: 0 2px 16px #0001; position: relative; display: flex; flex-direction: column; justify-content: flex-start;"
       >
+        <!-- Progress indicator inside card -->
+        <div class="card-progress-bar">
+          <QuizProgress
+            current={currentState.current + 1}
+            total={currentState.questions.length}
+          />
+        </div>
         <CardContent>
           {#if mode}
             <QuizQuestion
@@ -204,64 +203,112 @@
 </main>
 
 <style>
-  .quiz-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.2rem 2.2rem 1.2rem 1.2rem;
-    background: #fafbfc;
-    border-bottom: 1px solid #e5e7eb;
-    box-shadow: 0 2px 8px #0001;
-    margin-bottom: 2.5rem;
-    gap: 1.5rem;
+  :global(.floating-home-btn) {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    z-index: 100;
+    border-radius: 50px;
+    padding: 0.7em 1.5em;
+    font-size: 1.1em;
+    box-shadow: 0 2px 8px #0002;
+    background: #fff;
+    color: #222;
+    border: 1px solid #e5e7eb;
     transition:
       background 0.2s,
       box-shadow 0.2s;
   }
-  .quiz-header__left {
-    flex: 0 0 auto;
+  :global(.floating-home-btn:hover) {
+    background: #f3f4f6;
+    box-shadow: 0 4px 16px #0002;
   }
-  .quiz-header__center {
-    flex: 1 1 0;
+  .quiz-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25); /* Less opaque */
+    backdrop-filter: blur(2.5px); /* Subtle blur for modern look */
+    z-index: 200;
+    pointer-events: all;
+    transition: background 0.2s;
+  }
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #e5e7eb;
+    border-top: 5px solid #4f46e5;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1.2em;
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  .loading-text {
+    font-size: 1.3em;
+    color: #222;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2em;
+  }
+  .dot {
+    opacity: 0.2;
+    animation: blink 1.4s infinite both;
+    font-size: 1.3em;
+    margin-left: 0.1em;
+  }
+  .dot.one {
+    animation-delay: 0s;
+  }
+  .dot.two {
+    animation-delay: 0.2s;
+  }
+  .dot.three {
+    animation-delay: 0.4s;
+  }
+  @keyframes blink {
+    0%,
+    80%,
+    100% {
+      opacity: 0.2;
+    }
+    40% {
+      opacity: 1;
+    }
+  }
+
+  .card-progress-bar {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 2.2em;
-  }
-  .progress-inactive {
-    opacity: 0;
-    pointer-events: none;
-    user-select: none;
-    transition: opacity 0.2s;
-  }
-  .quiz-header__right {
-    text-align: center;
-    color: #64748b;
-    font-size: 1.2em;
+    padding: 1.2em 0 0.5em 0;
+    background: none;
   }
   @media (max-width: 600px) {
-    .quiz-header {
-      flex-direction: row;
-      align-items: center;
-      padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-      gap: 0.5rem;
+    :global(.floating-home-btn) {
+      top: 1rem;
+      left: 1rem;
+      padding: 0.6em 1.2em;
+      font-size: 1em;
     }
-    .quiz-header__left {
-      flex: 0 0 auto;
-      margin-right: 0.5rem;
-    }
-    .quiz-header__center {
-      flex: 1 1 0;
-      min-width: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
-    }
-    .quiz-header__center :global(.progress) {
-      width: 100%;
-      min-width: 0;
-      max-width: 340px;
+    .card-progress-bar {
+      padding: 0.7em 0 0.3em 0;
     }
   }
 </style>

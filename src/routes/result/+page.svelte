@@ -49,21 +49,8 @@
   }
 </script>
 
-<header class="quiz-header">
-  <div class="quiz-header__left">
-    <Button onclick={goHome} class="home-btn">Hem</Button>
-  </div>
-  <div class="quiz-header__center">
-    <!-- Hidden QuizProgress to match quiz screen height -->
-    <div
-      style="width:100%;display:flex;justify-content:center;opacity:0;pointer-events:none;user-select:none;"
-      aria-hidden="true"
-    >
-      <QuizProgress current={1} total={1} />
-    </div>
-  </div>
-  <div class="quiz-header__right"></div>
-</header>
+<!-- Floating Home Button -->
+<Button onclick={goHome} class="floating-home-btn" aria-label="Hem">Hem</Button>
 
 <main>
   <div class="centered-main">
@@ -146,62 +133,26 @@
 </main>
 
 <style>
-  /* Topbar styles (copied from quiz page) */
-  .quiz-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.2rem 2.2rem 1.2rem 1.2rem;
-    background: #fafbfc;
-    border-bottom: 1px solid #e5e7eb;
-    box-shadow: 0 2px 8px #0001;
-    margin-bottom: 2.5rem;
-    gap: 1.5rem;
+  :global(.floating-home-btn) {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 100;
+    border-radius: 50px;
+    padding: 0.7em 1.5em;
+    font-size: 1.1em;
+    box-shadow: 0 2px 8px #0002;
+    background: #fff;
+    color: #222;
+    border: 1px solid #e5e7eb;
     transition:
       background 0.2s,
       box-shadow 0.2s;
   }
-  .quiz-header__left {
-    flex: 0 0 auto;
+  :global(.floating-home-btn:hover) {
+    background: #f3f4f6;
+    box-shadow: 0 4px 16px #0002;
   }
-  .quiz-header__center {
-    flex: 1 1 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 2.2em;
-  }
-  .quiz-header__right {
-    text-align: center;
-    color: #64748b;
-    font-size: 1.2em;
-  }
-  @media (max-width: 600px) {
-    .quiz-header {
-      flex-direction: row;
-      align-items: center;
-      padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-      gap: 0.5rem;
-    }
-    .quiz-header__left {
-      flex: 0 0 auto;
-      margin-right: 0.5rem;
-    }
-    .quiz-header__center {
-      flex: 1 1 0;
-      min-width: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
-    }
-    .quiz-header__center :global(.progress) {
-      width: 100%;
-      min-width: 0;
-      max-width: 340px;
-    }
-  }
-
   /* Content container styles (copied from quiz page, adjusted for result) */
   .centered-main {
     max-width: 420px;
@@ -278,9 +229,11 @@
     .card-container {
       max-width: 100%;
     }
-  }
-  .answer-image {
-    max-width: 90px;
-    height: 90px;
+    :global(.floating-home-btn) {
+      bottom: 1rem;
+      left: 1rem;
+      padding: 0.6em 1.2em;
+      font-size: 1em;
+    }
   }
 </style>

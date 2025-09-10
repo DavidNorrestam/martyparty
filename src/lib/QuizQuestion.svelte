@@ -264,20 +264,42 @@
   }
   .answer-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1em;
-    width: 100%;
-    max-width: 340px;
+    width: 420px;
+    max-width: 100%;
     margin-bottom: 1em;
+    min-height: 8.4em; /* 2 rows of 3.7em + gap */
+    align-items: stretch;
+    justify-items: stretch;
+    /* Always reserve space for 2 rows of buttons */
   }
   .answer-btn {
     width: 100%;
-    height: 3.2em;
+    min-width: 0;
+    min-height: 3.7em;
     font-size: 1em;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    white-space: normal;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition:
+      background 0.15s,
+      box-shadow 0.15s;
+    box-sizing: border-box;
+    padding: 0 0.7em;
+  }
+  /* Ensure the answer area never shrinks vertically, even for 1 row */
+  @media (max-width: 600px) {
+    .answer-grid {
+      grid-template-columns: 1fr;
+      width: 100%;
+      min-height: 8.4em;
+    }
   }
   .freetext-form {
     display: flex;
