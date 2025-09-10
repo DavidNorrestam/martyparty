@@ -27,12 +27,26 @@ export const imageToNameFreetext: GameMode<ImageToNameQuestion> = {
         } catch {
             return false;
         }
+
+        // Helper to normalize strings:
+        // - Remove diacritics (accents)
+        // - Remove punctuation/special characters (but keep spaces)
+        // - Collapse multiple spaces, trim, and lowercase
+        const normalize = (str: string) =>
+            str
+                .normalize('NFD') // split accents from letters
+                .replace(/[\u0300-\u036f]/g, '') // remove diacritics
+                .replace(/[^a-z0-9 ]/gi, '') // remove all non-alphanumeric except space
+                .replace(/\s+/g, ' ') // collapse multiple spaces
+                .trim()
+                .toLowerCase();
+
         const swedishQ = question.swedishName || '';
         const latinQ = question.latinName || '';
         const swedishA = parsed.swedish || '';
         const latinA = parsed.latin || '';
-        const swedishCorrect = swedishA.trim().toLowerCase() === swedishQ.trim().toLowerCase();
-        const latinCorrect = latinA.trim().toLowerCase() === latinQ.trim().toLowerCase();
+        const swedishCorrect = normalize(swedishA) === normalize(swedishQ);
+        const latinCorrect = normalize(latinA) === normalize(latinQ);
         return swedishCorrect && latinCorrect;
     },
     getOptions: () => [], // No options for freetext mode
