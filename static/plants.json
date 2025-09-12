@@ -1,34 +1,42 @@
 [
     {
-        "swedishName": "Bok",
-        "latinName": "Fagus sylvatica"
+        "swedishName": "Äkta stormhatt",
+        "latinName": "Aconitum napellus"
     },
     {
-        "swedishName": "Lagerhägg",
-        "latinName": "Prunus laurocerasus"
-    },
-    {
-        "swedishName": "Lejongap",
-        "latinName": "Antirrhinum majus"
-    },
-    {
-        "swedishName": "Korallkornell",
-        "latinName": "Cornus alba 'Sibirica'"
-    },
-    {
-        "swedishName": "Dahlia",
-        "latinName": "Dahlia sp."
-    },
-    {
-        "swedishName": "Hästkastanj",
-        "latinName": "Aesculus hippocastanum"
+        "swedishName": "Höstsilverax",
+        "latinName": "Actaea simplex 'Brunette'"
     },
     {
         "swedishName": "Höstanemon",
         "latinName": "Anemone hupehensis"
     },
     {
-        "swedishName": "Alunrot",
-        "latinName": "Heuchera sp."
+        "swedishName": "Stjärnflocka",
+        "latinName": "Astrantia major"
+    },
+    {
+        "swedishName": "Tidlösa",
+        "latinName": "Colchicum autumnale"
+    },
+    {
+        "swedishName": "Röd solhatt",
+        "latinName": "Echinacea purpurea"
+    },
+    {
+        "swedishName": "Vit skogsaster",
+        "latinName": "Eurybia divaricata"
+    },
+    {
+        "swedishName": "Strutbräken",
+        "latinName": "Matteuccia struthiopteris"
+    },
+    {
+        "swedishName": "Bronsrodgersia",
+        "latinName": "Rodgersia podophylla"
+    },
+    {
+        "swedishName": "Höstaster",
+        "latinName": "Symphyotrichum novi-belgii 'Early Blue'"
     }
 ]
