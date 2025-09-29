@@ -44,12 +44,13 @@
       ) {
         taxonPhotos = taxonData.results[0].taxon_photos
           .map((p: any) => p.photo?.medium_url)
-          .filter(Boolean);
+          .filter(Boolean)
+          .slice(0, 10); // Only use the first 10 taxon photos
       }
       let obsPhotos: string[] = [];
       try {
         const obsResp = await fetch(
-          `https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(latin)}&photos=true`,
+          `https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(latin)}&photos=true&popular=true&per_page=30&order_by=date_added&order=desc`,
         );
         const obsData = await obsResp.json();
         if (obsData.results && obsData.results.length > 0) {
