@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { quiz } from "$lib/stores/quiz";
   import { gameModes, type GameMode } from "$lib/gameModes";
   import { goto } from "$app/navigation";
@@ -20,78 +19,85 @@
   // For test harness: expose mode selection
   let selectedModeId: string = "";
 
+  // Always pick 2 taxon photos and 2 observation photos (fill up to 4)
   async function fetchImagesForPlant(plant: { latinName: string }) {
-    // Remove quoted substrings and ' sp.' or ' sp' at the end, then trim whitespace
     let latin = plant.latinName
       .replace(/"[^"]*"|'[^']*'/g, "")
       .replace(/\s+sp\.?$/i, "")
       .trim();
-    if (plant.latinName.trim().toLowerCase() === "antirrhinum majus") {
-      latin = latin.split(" ")[0];
-    }
     try {
-      // Step 1: Get taxon id from taxa API
       const taxaResp = await fetch(
         `https://api.inaturalist.org/v1/taxa?q=${encodeURIComponent(latin)}`,
       );
       const taxaData = await taxaResp.json();
       if (!taxaData.results || taxaData.results.length === 0) return [];
       const taxonId = taxaData.results[0].id;
-      // Step 2: Fetch taxon details to get taxon_photos
       const taxonResp = await fetch(
         `https://api.inaturalist.org/v1/taxa/${taxonId}`,
       );
       const taxonData = await taxonResp.json();
-      let photos: string[] = [];
+      let taxonPhotos: string[] = [];
       if (
         taxonData.results &&
         taxonData.results.length > 0 &&
         taxonData.results[0].taxon_photos
       ) {
-        photos = taxonData.results[0].taxon_photos
-          .map((p: any) => p.photo?.medium_url || p.photo?.url)
+        taxonPhotos = taxonData.results[0].taxon_photos
+          .map((p: any) => p.photo?.medium_url)
           .filter(Boolean);
       }
-      let uniquePhotos = Array.from(new Set(photos));
-      // If less than 3, fetch from observations API as fallback
-      if (uniquePhotos.length < 3) {
-        try {
-          const obsResp = await fetch(
-            `https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(latin)}&photos=true`,
-          );
-          const obsData = await obsResp.json();
-          if (obsData.results && obsData.results.length > 0) {
-            let obsPhotos = obsData.results
-              .flatMap((r: any) =>
-                (r.photos || []).map((p: any) => p.medium_url || p.url),
-              )
-              .filter(Boolean);
-            for (let i = obsPhotos.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [obsPhotos[i], obsPhotos[j]] = [obsPhotos[j], obsPhotos[i]];
-            }
-            for (const url of obsPhotos) {
-              if (uniquePhotos.length >= 3) break;
-              if (!uniquePhotos.includes(url)) uniquePhotos.push(url);
-            }
-          }
-        } catch {}
-      }
-      // Shuffle and pick up to 3
-      if (uniquePhotos.length > 3) {
-        for (let i = uniquePhotos.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [uniquePhotos[i], uniquePhotos[j]] = [
-            uniquePhotos[j],
-            uniquePhotos[i],
-          ];
+      let obsPhotos: string[] = [];
+      try {
+        const obsResp = await fetch(
+          `https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(latin)}&photos=true`,
+        );
+        const obsData = await obsResp.json();
+        if (obsData.results && obsData.results.length > 0) {
+          obsPhotos = obsData.results
+            .flatMap((r: any) =>
+              (r.photos || []).map((p: any) => {
+                if (p.url) {
+                  // Replace 'square' (or any size) in the filename with 'medium'
+                  return p.url.replace(
+                    /(square|small|thumb|original|large)(\.[a-zA-Z]+)$/i,
+                    "medium$2",
+                  );
+                }
+                return null;
+              }),
+            )
+            .filter(Boolean);
         }
-        return uniquePhotos.slice(0, 3);
-      } else if (uniquePhotos.length > 0) {
-        return uniquePhotos;
-      } else {
-        return [];
+      } catch {}
+      obsPhotos = obsPhotos.filter((url) => !taxonPhotos.includes(url));
+      for (let i = taxonPhotos.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [taxonPhotos[i], taxonPhotos[j]] = [taxonPhotos[j], taxonPhotos[i]];
       }
+      for (let i = obsPhotos.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [obsPhotos[i], obsPhotos[j]] = [obsPhotos[j], obsPhotos[i]];
+      }
+      let selected: string[] = [];
+      let taxonCount = Math.min(2, taxonPhotos.length);
+      let obsCount = Math.min(2, obsPhotos.length);
+      selected = [
+        ...taxonPhotos.slice(0, taxonCount),
+        ...obsPhotos.slice(0, obsCount),
+      ];
+      if (selected.length < 4) {
+        let fillTaxon = taxonPhotos.slice(taxonCount);
+        let fillObs = obsPhotos.slice(obsCount);
+        let fill = [...fillTaxon, ...fillObs];
+        for (let i = 0; i < fill.length && selected.length < 4; i++) {
+          if (!selected.includes(fill[i])) selected.push(fill[i]);
+        }
+      }
+      for (let i = selected.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [selected[i], selected[j]] = [selected[j], selected[i]];
+      }
+      return selected;
     } catch {
       return [];
     }
@@ -120,6 +126,7 @@
     loading = false;
   }
 
+  import { onMount } from "svelte";
   onMount(() => {
     // Read mode from query param
     const urlMode = get(page).url.searchParams.get("mode");
