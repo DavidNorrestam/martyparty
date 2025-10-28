@@ -23,6 +23,7 @@
   async function fetchImagesForPlant(plant: { latinName: string }) {
     let latin = plant.latinName
       .replace(/"[^"]*"|'[^']*'/g, "")
+      .replace(/\s+subsp\.\s+/i, " ")
       .replace(/\s+sp\.?$/i, "")
       .trim();
     try {
