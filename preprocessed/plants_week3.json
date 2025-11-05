@@ -1,0 +1,122 @@
+[
+  {
+    "swedishName": "Jättedaggkåpa",
+    "latinName": "Alchemilla mollis",
+    "searchName": "Alchemilla mollis",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Alchemilla mollis",
+      "wfoId": "wfo-0001018841",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Hasselört",
+    "latinName": "Asarum europaeum",
+    "searchName": "Asarum europaeum",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Asarum europaeum",
+      "wfoId": "wfo-0000550828",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Röd sockblomma",
+    "latinName": "Epimedium x rubrum",
+    "searchName": "Epimedium x rubrum",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Epimedium xichangense",
+      "wfoId": "wfo-0001346002",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Alunrot",
+    "latinName": "Heuchera sp.",
+    "searchName": "Heuchera",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Heuchera",
+      "wfoId": "wfo-4000017800",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Kinesisk kärleksört",
+    "latinName": "Hylotelephium spectabile",
+    "searchName": "Hylotelephium spectabile",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Hylotelephium spectabile",
+      "wfoId": "wfo-0001300589",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Lavendel",
+    "latinName": "Lavandula angustifolia",
+    "searchName": "Lavandula angustifolia",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Lavandula angustifolia",
+      "wfoId": "wfo-0000224115",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Silverfryle",
+    "latinName": "Luzula nivea",
+    "searchName": "Luzula nivea",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Luzula nivea",
+      "wfoId": "wfo-0000777992",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Storfryle",
+    "latinName": "Luzula sylvatica",
+    "searchName": "Luzula sylvatica",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Luzula sylvatica",
+      "wfoId": "wfo-0000778183",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Glansmiskantus",
+    "latinName": "Miscanthus sinensis",
+    "searchName": "Miscanthus sinensis",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Miscanthus sinensis",
+      "wfoId": "wfo-0000880299",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Skuggröna",
+    "latinName": "Pachysandra terminalis",
+    "searchName": "Pachysandra terminalis",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Pachysandra terminalis",
+      "wfoId": "wfo-0000733029",
+      "hasMatch": true
+    }
+  }
+]

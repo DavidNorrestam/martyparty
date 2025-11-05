@@ -1,0 +1,98 @@
+[
+  {
+    "swedishName": "Bok",
+    "latinName": "Fagus sylvatica",
+    "searchName": "Fagus sylvatica",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Fagus sylvatica",
+      "wfoId": "wfo-0000966507",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Lagerhägg",
+    "latinName": "Prunus laurocerasus",
+    "searchName": "Prunus laurocerasus",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Prunus laurocerasus",
+      "wfoId": "wfo-0001016516",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Lejongap",
+    "latinName": "Antirrhinum majus",
+    "searchName": "Antirrhinum majus",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Antirrhinum majus",
+      "wfoId": "wfo-0000539365",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Korallkornell",
+    "latinName": "Cornus alba 'Sibirica'",
+    "searchName": "Cornus alba",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Cornus alba",
+      "wfoId": "wfo-0000924570",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Dahlia",
+    "latinName": "Dahlia sp.",
+    "searchName": "Dahlia",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Dahlia",
+      "wfoId": "wfo-4000010667",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Hästkastanj",
+    "latinName": "Aesculus hippocastanum",
+    "searchName": "Aesculus hippocastanum",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Aesculus hippocastanum",
+      "wfoId": "wfo-0000522287",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Höstanemon",
+    "latinName": "Anemone hupehensis",
+    "searchName": "Eriocapitella hupehensis",
+    "wfoData": {
+      "isAccepted": false,
+      "isSynonym": true,
+      "acceptedName": "Eriocapitella hupehensis",
+      "wfoId": "wfo-0000535370",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Alunrot",
+    "latinName": "Heuchera sp.",
+    "searchName": "Heuchera",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Heuchera",
+      "wfoId": "wfo-4000017800",
+      "hasMatch": true
+    }
+  }
+]

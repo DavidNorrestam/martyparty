@@ -1,0 +1,122 @@
+[
+  {
+    "swedishName": "Kinesisk strimlönn",
+    "latinName": "Acer davidii subsp. grosseri",
+    "searchName": "Acer davidii grosseri",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Acer davidii grosseri",
+      "wfoId": "wfo-0001251537",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Svartaronia",
+    "latinName": "Aronia melanocarpa",
+    "searchName": "Aronia melanocarpa",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Aronia melanocarpa",
+      "wfoId": "wfo-0000995581",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Häckberberis",
+    "latinName": "Berberis thunbergii",
+    "searchName": "Berberis thunbergii",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Berberis thunbergii",
+      "wfoId": "wfo-0000563924",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Skogskornell",
+    "latinName": "Cornus sanguinea",
+    "searchName": "Cornus sanguinea",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Cornus sanguinea",
+      "wfoId": "wfo-0000924828",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Prydnadsapel",
+    "latinName": "Malus 'John Downie'",
+    "searchName": "Malus",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Malus",
+      "wfoId": "wfo-4000022982",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Havtorn",
+    "latinName": "Hippophae rhamnoides",
+    "searchName": "Hippophae rhamnoides",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Hippophae rhamnoides",
+      "wfoId": "wfo-0000723743",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Vinterhyperikum",
+    "latinName": "Hypericum x hidcoteense 'Hidcote'",
+    "searchName": "Hypericum x hidcoteense",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Hypericum xylosteifolium",
+      "wfoId": "wfo-0000728477",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Måbär",
+    "latinName": "Ribes alpinum",
+    "searchName": "Ribes alpinum",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Ribes alpinum",
+      "wfoId": "wfo-0000404909",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Svarta vinbär",
+    "latinName": "Ribes nigrum",
+    "searchName": "Ribes nigrum",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Ribes nigrum",
+      "wfoId": "wfo-0000405161",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Brokspirea",
+    "latinName": "Spiraea japonica 'Genpei'",
+    "searchName": "Spiraea japonica",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Spiraea japonica",
+      "wfoId": "wfo-0000985241",
+      "hasMatch": true
+    }
+  }
+]

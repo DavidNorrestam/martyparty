@@ -1,0 +1,122 @@
+[
+  {
+    "swedishName": "Japansk lönn",
+    "latinName": "Acer palmatum",
+    "searchName": "Acer palmatum",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Acer palmatum",
+      "wfoId": "wfo-0000514777",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Ginnalönn",
+    "latinName": "Acer tataricum subsp. ginnala",
+    "searchName": "Acer tataricum ginnala",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Acer tataricum subsp",
+      "wfoId": "wfo-0000515184",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Rosenoxbär",
+    "latinName": "Cotoneaster dielsianus",
+    "searchName": "Cotoneaster dielsianus",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Cotoneaster dielsianus",
+      "wfoId": "wfo-0000985522",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Spärroxbär",
+    "latinName": "Cotoneaster divaricatus",
+    "searchName": "Cotoneaster divaricatus",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Cotoneaster divaricatus",
+      "wfoId": "wfo-0000983884",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Silverbuske",
+    "latinName": "Elaeagnus commutata",
+    "searchName": "Elaeagnus commutata",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Elaeagnus commutata",
+      "wfoId": "wfo-0000663703",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Benved",
+    "latinName": "Euonymus europaeus",
+    "searchName": "Euonymus europaeus",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Euonymus europaeus",
+      "wfoId": "wfo-0000681728",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Körsbärsbenved",
+    "latinName": "Euonymus planipes",
+    "searchName": "Euonymus sachalinensis",
+    "wfoData": {
+      "isAccepted": false,
+      "isSynonym": true,
+      "acceptedName": "Euonymus sachalinensis",
+      "wfoId": "wfo-0000682004",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Bukettapel",
+    "latinName": "Malus toringo var. sargentii",
+    "searchName": "Malus toringo",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Malus toringo",
+      "wfoId": "wfo-0000995238",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Liten stefanandra",
+    "latinName": "Neillia incisa 'Crispa'",
+    "searchName": "Neillia incisa",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Neillia incisa",
+      "wfoId": "wfo-0001014996",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Snöbär",
+    "latinName": "Symphoricarpos albus subsp. laevigatus",
+    "searchName": "Symphoricarpos albus laevigatus",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Symphoricarpos albus var",
+      "wfoId": "wfo-0000442164",
+      "hasMatch": true
+    }
+  }
+]
