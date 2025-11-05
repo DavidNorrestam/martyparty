@@ -3,6 +3,7 @@
 export interface BaseQuestion {
     swedishName: string;
     latinName: string;
+    searchName?: string;  // Preprocessed name for API queries (optional for backwards compatibility)
     images?: string[];
     answer: string;
     [key: string]: any;

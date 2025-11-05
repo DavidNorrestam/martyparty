@@ -1,0 +1,122 @@
+[
+  {
+    "swedishName": "Äkta stormhatt",
+    "latinName": "Aconitum napellus",
+    "searchName": "Aconitum napellus",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Aconitum napellus",
+      "wfoId": "wfo-0000517688",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Höstsilverax",
+    "latinName": "Actaea simplex 'Brunette'",
+    "searchName": "Actaea simplex",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Actaea simplex",
+      "wfoId": "wfo-0000519124",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Höstanemon",
+    "latinName": "Anemone hupehensis",
+    "searchName": "Eriocapitella hupehensis",
+    "wfoData": {
+      "isAccepted": false,
+      "isSynonym": true,
+      "acceptedName": "Eriocapitella hupehensis",
+      "wfoId": "wfo-0000535370",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Stjärnflocka",
+    "latinName": "Astrantia major",
+    "searchName": "Astrantia major",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Astrantia major",
+      "wfoId": "wfo-0000554832",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Tidlösa",
+    "latinName": "Colchicum autumnale",
+    "searchName": "Colchicum autumnale",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Colchicum autumnale",
+      "wfoId": "wfo-0000763824",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Röd solhatt",
+    "latinName": "Echinacea purpurea",
+    "searchName": "Echinacea purpurea",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Echinacea purpurea",
+      "wfoId": "wfo-0000036347",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Vit skogsaster",
+    "latinName": "Eurybia divaricata",
+    "searchName": "Eurybia divaricata",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Eurybia divaricata",
+      "wfoId": "wfo-0000060736",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Strutbräken",
+    "latinName": "Matteuccia struthiopteris",
+    "searchName": "Matteuccia struthiopteris",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Matteuccia struthiopteris",
+      "wfoId": "wfo-0001109164",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Bronsrodgersia",
+    "latinName": "Rodgersia podophylla",
+    "searchName": "Rodgersia podophylla",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Rodgersia podophylla",
+      "wfoId": "wfo-0000463859",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Höstaster",
+    "latinName": "Symphyotrichum novi-belgii 'Early Blue'",
+    "searchName": "Symphyotrichum novi-belgii",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Symphyotrichum novi-belgii",
+      "wfoId": "wfo-0000075141",
+      "hasMatch": true
+    }
+  }
+]

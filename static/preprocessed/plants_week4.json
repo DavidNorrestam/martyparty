@@ -1,0 +1,122 @@
+[
+  {
+    "swedishName": "Klibbal",
+    "latinName": "Alnus glutinosa",
+    "searchName": "Alnus glutinosa",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Alnus glutinosa",
+      "wfoId": "wfo-0000945215",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Gråal",
+    "latinName": "Alnus incana",
+    "searchName": "Alnus incana",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Alnus incana",
+      "wfoId": "wfo-0000945749",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Avenbok",
+    "latinName": "Carpinus betulus",
+    "searchName": "Carpinus betulus",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Carpinus betulus",
+      "wfoId": "wfo-0000804581",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Äkta kastanj",
+    "latinName": "Castanea sativa",
+    "searchName": "Castanea sativa",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Castanea sativa",
+      "wfoId": "wfo-0000812271",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Bok",
+    "latinName": "Fagus sylvatica",
+    "searchName": "Fagus sylvatica",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Fagus sylvatica",
+      "wfoId": "wfo-0000966507",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Asp",
+    "latinName": "Populus tremula",
+    "searchName": "Populus tremula",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Populus tremula",
+      "wfoId": "wfo-0000928205",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Goliatpoppel",
+    "latinName": "Populus x canadensis 'Robusta'",
+    "searchName": "Populus x canadensis",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Populus xiangchengensis",
+      "wfoId": "wfo-0001134271",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Glanskörsbär",
+    "latinName": "Prunus serrula",
+    "searchName": "Prunus serrula",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Prunus serrula",
+      "wfoId": "wfo-0001002069",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Skogsek",
+    "latinName": "Quercus robur",
+    "searchName": "Quercus robur",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Quercus robur",
+      "wfoId": "wfo-0000292858",
+      "hasMatch": true
+    }
+  },
+  {
+    "swedishName": "Rödek",
+    "latinName": "Quercus rubra",
+    "searchName": "Quercus rubra",
+    "wfoData": {
+      "isAccepted": true,
+      "isSynonym": false,
+      "acceptedName": "Quercus rubra",
+      "wfoId": "wfo-0000293006",
+      "hasMatch": true
+    }
+  }
+]

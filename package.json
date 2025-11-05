@@ -11,7 +11,11 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"build:github": "vite build",
-		"deploy": "npm run build:github && npx gh-pages -d dist --nojekyll"
+		"deploy": "npm run build:github && npx gh-pages -d dist --nojekyll",
+		"preprocess": "npx tsx scripts/preprocess-plants.ts",
+		"preprocess:skip-wfo": "npx tsx scripts/preprocess-plants.ts --skip-wfo",
+		"test:inaturalist": "npx tsx scripts/test-inaturalist.ts",
+		"test:inaturalist:preprocessed": "npx tsx scripts/test-inaturalist.ts --preprocessed"
 	},
 	"devDependencies": {
 		"@internationalized/date": "^3.9.0",

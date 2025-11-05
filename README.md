@@ -57,6 +57,58 @@ npm run dev
 ```
 Visit [localhost:5173](http://localhost:5173) (or the port shown in your terminal).
 
+### Plant Data Preprocessing
+
+The app uses preprocessed plant data to improve iNaturalist API query reliability. When you update plant data files in `static/`, run the preprocessing script:
+
+```sh
+npm run preprocess
+```
+
+This script:
+- Cleans Latin names (removes variety/cultivar notation like `subsp.`, `var.`, `f.`)
+- Removes cultivar names in quotes  
+- Queries WFO Plant List API to detect synonyms and replace them with accepted names
+- Generates preprocessed files in `static/preprocessed/` with a `searchName` field optimized for iNaturalist
+
+**How synonym resolution works:**
+- **True synonyms** (outdated names) are replaced with current accepted names
+  - Example: `Euonymus planipes` → `Euonymus sachalinensis`
+  - Example: `Anemone hupehensis` → `Eriocapitella hupehensis`
+- **Rank changes** (subsp. vs var.) use the cleaned name without rank notation
+  - Example: `Symphoricarpos albus subsp. laevigatus` → `Symphoricarpos albus laevigatus`
+
+For faster preprocessing without WFO lookup (synonym detection disabled):
+```sh
+npm run preprocess:skip-wfo
+```
+
+### Testing iNaturalist Data Availability
+
+Before deploying, validate that plant names will return good results from iNaturalist:
+
+```sh
+# Test the default plants.json file (preprocessed version)
+npm run test:inaturalist:preprocessed
+
+# Test a specific file
+npm run test:inaturalist:preprocessed plants_week1.json
+
+# Test original (non-preprocessed) data
+npm run test:inaturalist plants.json
+```
+
+This generates a detailed report at `test-results/<filename>-report.md` showing:
+- How many photos are available for each plant
+- Which taxon names match in iNaturalist
+- Warnings for plants with insufficient data
+
+**When to run these scripts:**
+- Run `preprocess` whenever you add or update plant data files
+- Run `test:inaturalist:preprocessed` before major updates to check data quality
+- Test individual files when debugging specific plant entries
+- Preprocessed files are committed to the repository
+
 ## Building & Deployment
 
 To build for production:

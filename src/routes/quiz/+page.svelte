@@ -20,12 +20,12 @@
   let selectedModeId: string = "";
 
   // Always pick 2 taxon photos and 2 observation photos (fill up to 4)
-  async function fetchImagesForPlant(plant: { latinName: string }) {
-    let latin = plant.latinName
-      .replace(/"[^"]*"|'[^']*'/g, "")
-      .replace(/\s+subsp\.\s+/i, " ")
-      .replace(/\s+sp\.?$/i, "")
-      .trim();
+  async function fetchImagesForPlant(plant: {
+    latinName: string;
+    searchName?: string;
+  }) {
+    // Use searchName if available (from preprocessed data), otherwise use latinName
+    let latin = plant.searchName || plant.latinName;
     try {
       const taxaResp = await fetch(
         `https://api.inaturalist.org/v1/taxa?q=${encodeURIComponent(latin)}`,
@@ -50,10 +50,20 @@
       }
       let obsPhotos: string[] = [];
       try {
-        const obsResp = await fetch(
+        // First try with popular=true filter for better quality photos
+        let obsResp = await fetch(
           `https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(latin)}&photos=true&popular=true&per_page=30&order_by=date_added&order=desc`,
         );
-        const obsData = await obsResp.json();
+        let obsData = await obsResp.json();
+
+        // If we don't have enough results with popular filter, try again without it
+        if (!obsData.results || obsData.results.length < 10) {
+          obsResp = await fetch(
+            `https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(latin)}&photos=true&per_page=30&order_by=date_added&order=desc`,
+          );
+          obsData = await obsResp.json();
+        }
+
         if (obsData.results && obsData.results.length > 0) {
           obsPhotos = obsData.results
             .flatMap((r: any) =>
@@ -110,7 +120,12 @@
     mode = foundMode;
     selectedModeId = mode.id;
     loading = true;
-    const res = await fetch(asset("/plants.json"));
+    // Try to load preprocessed data first, fall back to original if not available
+    let res = await fetch(asset("/preprocessed/plants.json"));
+    if (!res.ok) {
+      console.warn("Preprocessed data not found, falling back to original");
+      res = await fetch(asset("/plants.json"));
+    }
     let data = await res.json();
     // If mode requires images, fetch images for each plant
     if (
