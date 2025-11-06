@@ -5,7 +5,7 @@
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import { join } from 'path';
-import { cleanLatinName, getAcceptedName, delay, type WFOData } from './preprocess-utils.js';
+import { cleanLatinName, getAcceptedName, delay, fetchINaturalistPhotos, type WFOData, type INaturalistPhotos } from './preprocess-utils.js';
 
 interface PlantInput {
     swedishName: string;
@@ -15,12 +15,14 @@ interface PlantInput {
 interface PlantOutput extends PlantInput {
     searchName: string;
     wfoData?: WFOData;
+    taxonPhotos?: string[];
+    observationPhotos?: string[];
 }
 
 /**
  * Process a single plant entry
  */
-async function processPlant(plant: PlantInput, enableWFO: boolean = true): Promise<PlantOutput> {
+async function processPlant(plant: PlantInput, enableWFO: boolean = true, enableImages: boolean = true): Promise<PlantOutput> {
     // Step 1: Clean the latin name
     const cleanedName = cleanLatinName(plant.latinName);
 
@@ -42,18 +44,30 @@ async function processPlant(plant: PlantInput, enableWFO: boolean = true): Promi
         searchName = wfoData.acceptedName;
     }
 
+    // Step 4: Fetch iNaturalist photos if enabled
+    let iNatPhotos: INaturalistPhotos | undefined;
+    if (enableImages) {
+        iNatPhotos = await fetchINaturalistPhotos(searchName);
+        // Add delay to respect API rate limits
+        await delay(500);
+    }
+
     return {
         swedishName: plant.swedishName,
         latinName: plant.latinName,
         searchName,
         ...(enableWFO && { wfoData }),
+        ...(enableImages && {
+            taxonPhotos: iNatPhotos?.taxonPhotos || [],
+            observationPhotos: iNatPhotos?.observationPhotos || [],
+        }),
     };
 }
 
 /**
  * Process a plant JSON file
  */
-async function processFile(inputPath: string, outputPath: string, enableWFO: boolean = true): Promise<void> {
+async function processFile(inputPath: string, outputPath: string, enableWFO: boolean = true, enableImages: boolean = true): Promise<void> {
     console.log(`\nProcessing: ${inputPath}`);
 
     // Read input file
@@ -66,7 +80,7 @@ async function processFile(inputPath: string, outputPath: string, enableWFO: boo
         const plant = inputData[i];
         console.log(`  [${i + 1}/${inputData.length}] Processing: ${plant.latinName}`);
 
-        const processed = await processPlant(plant, enableWFO);
+        const processed = await processPlant(plant, enableWFO, enableImages);
         outputData.push(processed);
 
         // Log if name changed
@@ -75,6 +89,14 @@ async function processFile(inputPath: string, outputPath: string, enableWFO: boo
         }
         if (processed.wfoData && !processed.wfoData.hasMatch) {
             console.log(`    ⚠ No WFO match found`);
+        }
+        if (enableImages) {
+            const taxonCount = processed.taxonPhotos?.length || 0;
+            const obsCount = processed.observationPhotos?.length || 0;
+            console.log(`    → Photos: ${taxonCount} taxon, ${obsCount} observation`);
+            if (taxonCount === 0 && obsCount === 0) {
+                console.log(`    ⚠ No photos found`);
+            }
         }
     }
 
@@ -89,11 +111,13 @@ async function processFile(inputPath: string, outputPath: string, enableWFO: boo
 async function main() {
     const args = process.argv.slice(2);
     const enableWFO = !args.includes('--skip-wfo');
+    const enableImages = !args.includes('--skip-images');
 
     console.log('='.repeat(60));
     console.log('Plant Data Preprocessing Script');
     console.log('='.repeat(60));
     console.log(`WFO API lookup: ${enableWFO ? 'ENABLED' : 'DISABLED'}`);
+    console.log(`iNaturalist image fetching: ${enableImages ? 'ENABLED' : 'DISABLED'}`);
 
     // Paths
     const staticDir = join(process.cwd(), 'static');
@@ -123,7 +147,7 @@ async function main() {
     for (const file of plantFiles) {
         const inputPath = join(staticDir, file);
         const outputPath = join(outputDir, file);
-        await processFile(inputPath, outputPath, enableWFO);
+        await processFile(inputPath, outputPath, enableWFO, enableImages);
     }
 
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);

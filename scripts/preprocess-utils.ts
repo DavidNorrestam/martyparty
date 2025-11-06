@@ -322,6 +322,103 @@ export function delay(ms: number): Promise<void> {
 }
 
 /**
+ * iNaturalist photo data
+ */
+export interface INaturalistPhotos {
+    taxonPhotos: string[];
+    observationPhotos: string[];
+}
+
+/**
+ * Fetch taxon photos and observation photos from iNaturalist API
+ * This follows the same logic as the quiz page to ensure consistent behavior
+ * 
+ * @param searchName - The plant name to search for (should use searchName from preprocessed data)
+ * @returns Object with arrays of taxon photo URLs and observation photo URLs
+ */
+export async function fetchINaturalistPhotos(searchName: string): Promise<INaturalistPhotos> {
+    try {
+        // Step 1: Get taxon ID
+        const taxaResp = await fetch(
+            `https://api.inaturalist.org/v1/taxa?q=${encodeURIComponent(searchName)}`
+        );
+        const taxaData = await taxaResp.json();
+
+        if (!taxaData.results || taxaData.results.length === 0) {
+            return { taxonPhotos: [], observationPhotos: [] };
+        }
+
+        const taxonId = taxaData.results[0].id;
+
+        // Step 2: Get taxon photos
+        const taxonResp = await fetch(
+            `https://api.inaturalist.org/v1/taxa/${taxonId}`
+        );
+        const taxonData = await taxonResp.json();
+
+        let taxonPhotos: string[] = [];
+        if (
+            taxonData.results &&
+            taxonData.results.length > 0 &&
+            taxonData.results[0].taxon_photos
+        ) {
+            taxonPhotos = taxonData.results[0].taxon_photos
+                .map((p: any) => p.photo?.medium_url)
+                .filter(Boolean)
+                .slice(0, 10); // Only use the first 10 taxon photos
+        }
+
+        // Step 3: Get observation photos
+        let obsPhotos: string[] = [];
+        try {
+            // First try with popular=true filter for better quality photos
+            let obsResp = await fetch(
+                `https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(searchName)}&photos=true&popular=true&per_page=30&order_by=date_added&order=desc`
+            );
+            let obsData = await obsResp.json();
+
+            // If we don't have enough results with popular filter, try again without it
+            if (!obsData.results || obsData.results.length < 10) {
+                obsResp = await fetch(
+                    `https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(searchName)}&photos=true&per_page=30&order_by=date_added&order=desc`
+                );
+                obsData = await obsResp.json();
+            }
+
+            if (obsData.results && obsData.results.length > 0) {
+                obsPhotos = obsData.results
+                    .flatMap((r: any) =>
+                        (r.photos || []).map((p: any) => {
+                            if (p.url) {
+                                // Replace 'square' (or any size) in the filename with 'medium'
+                                return p.url.replace(
+                                    /(square|small|thumb|original|large)(\.[a-zA-Z]+)$/i,
+                                    'medium$2'
+                                );
+                            }
+                            return null;
+                        })
+                    )
+                    .filter(Boolean);
+            }
+        } catch (err) {
+            console.warn(`Failed to fetch observation photos for "${searchName}":`, err);
+        }
+
+        // Remove any observation photos that are duplicates of taxon photos
+        obsPhotos = obsPhotos.filter((url) => !taxonPhotos.includes(url));
+
+        return {
+            taxonPhotos,
+            observationPhotos: obsPhotos,
+        };
+    } catch (error) {
+        console.error(`Error fetching iNaturalist photos for "${searchName}":`, error);
+        return { taxonPhotos: [], observationPhotos: [] };
+    }
+}
+
+/**
  * Test the WFO API integration
  */
 async function testWFOAPI() {

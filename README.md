@@ -59,17 +59,17 @@ Visit [localhost:5173](http://localhost:5173) (or the port shown in your termina
 
 ### Plant Data Preprocessing
 
-The app uses preprocessed plant data to improve iNaturalist API query reliability. When you update plant data files in `static/`, run the preprocessing script:
+The app uses preprocessed plant data to improve performance and reliability. When you update plant data files in `static/`, run the preprocessing script:
 
 ```sh
 npm run preprocess
 ```
 
-This script:
-- Cleans Latin names (removes variety/cultivar notation like `subsp.`, `var.`, `f.`)
-- Removes cultivar names in quotes  
-- Queries WFO Plant List API to detect synonyms and replace them with accepted names
-- Generates preprocessed files in `static/preprocessed/` with a `searchName` field optimized for iNaturalist
+This script performs the following tasks:
+- **Name Cleaning**: Removes variety/cultivar notation (like `subsp.`, `var.`, `f.`, cultivar names in quotes)
+- **Synonym Resolution**: Queries WFO Plant List API to detect synonyms and replace them with accepted names
+- **Image Fetching**: Fetches photo URLs from iNaturalist API (taxon photos and observation photos separately)
+- Generates preprocessed files in `static/preprocessed/` with optimized data for the quiz
 
 **How synonym resolution works:**
 - **True synonyms** (outdated names) are replaced with current accepted names
@@ -78,9 +78,21 @@ This script:
 - **Rank changes** (subsp. vs var.) use the cleaned name without rank notation
   - Example: `Symphoricarpos albus subsp. laevigatus` → `Symphoricarpos albus laevigatus`
 
-For faster preprocessing without WFO lookup (synonym detection disabled):
+**Performance Benefits:**
+- Image URLs are fetched during preprocessing instead of at quiz load time
+- Quiz loads instantly without waiting for API calls
+- Images are pre-validated and ready to display
+
+**Preprocessing Options:**
 ```sh
-npm run preprocess:skip-wfo
+# Skip WFO lookup (faster, no synonym detection)
+npm run preprocess -- --skip-wfo
+
+# Skip iNaturalist image fetching (faster, but quiz won't have images)
+npm run preprocess -- --skip-images
+
+# Skip both (fastest, basic name cleaning only)
+npm run preprocess -- --skip-wfo --skip-images
 ```
 
 ### Testing iNaturalist Data Availability
@@ -104,10 +116,9 @@ This generates a detailed report at `test-results/<filename>-report.md` showing:
 - Warnings for plants with insufficient data
 
 **When to run these scripts:**
-- Run `preprocess` whenever you add or update plant data files
-- Run `test:inaturalist:preprocessed` before major updates to check data quality
-- Test individual files when debugging specific plant entries
-- Preprocessed files are committed to the repository
+- Run `preprocess` whenever you add or update plant data files (this now includes image fetching)
+- Run `test:inaturalist:preprocessed` to verify data quality if needed
+- Preprocessed files with image URLs are committed to the repository for instant quiz loading
 
 ## Building & Deployment
 

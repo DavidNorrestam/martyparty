@@ -20,99 +20,58 @@
   let selectedModeId: string = "";
 
   // Always pick 2 taxon photos and 2 observation photos (fill up to 4)
-  async function fetchImagesForPlant(plant: {
-    latinName: string;
-    searchName?: string;
+  // Now uses preprocessed data instead of making API calls
+  function selectImagesForPlant(plant: {
+    taxonPhotos?: string[];
+    observationPhotos?: string[];
   }) {
-    // Use searchName if available (from preprocessed data), otherwise use latinName
-    let latin = plant.searchName || plant.latinName;
-    try {
-      const taxaResp = await fetch(
-        `https://api.inaturalist.org/v1/taxa?q=${encodeURIComponent(latin)}`,
-      );
-      const taxaData = await taxaResp.json();
-      if (!taxaData.results || taxaData.results.length === 0) return [];
-      const taxonId = taxaData.results[0].id;
-      const taxonResp = await fetch(
-        `https://api.inaturalist.org/v1/taxa/${taxonId}`,
-      );
-      const taxonData = await taxonResp.json();
-      let taxonPhotos: string[] = [];
-      if (
-        taxonData.results &&
-        taxonData.results.length > 0 &&
-        taxonData.results[0].taxon_photos
-      ) {
-        taxonPhotos = taxonData.results[0].taxon_photos
-          .map((p: any) => p.photo?.medium_url)
-          .filter(Boolean)
-          .slice(0, 10); // Only use the first 10 taxon photos
-      }
-      let obsPhotos: string[] = [];
-      try {
-        // First try with popular=true filter for better quality photos
-        let obsResp = await fetch(
-          `https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(latin)}&photos=true&popular=true&per_page=30&order_by=date_added&order=desc`,
-        );
-        let obsData = await obsResp.json();
+    const taxonPhotos = plant.taxonPhotos || [];
+    const observationPhotos = plant.observationPhotos || [];
 
-        // If we don't have enough results with popular filter, try again without it
-        if (!obsData.results || obsData.results.length < 10) {
-          obsResp = await fetch(
-            `https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(latin)}&photos=true&per_page=30&order_by=date_added&order=desc`,
-          );
-          obsData = await obsResp.json();
-        }
-
-        if (obsData.results && obsData.results.length > 0) {
-          obsPhotos = obsData.results
-            .flatMap((r: any) =>
-              (r.photos || []).map((p: any) => {
-                if (p.url) {
-                  // Replace 'square' (or any size) in the filename with 'medium'
-                  return p.url.replace(
-                    /(square|small|thumb|original|large)(\.[a-zA-Z]+)$/i,
-                    "medium$2",
-                  );
-                }
-                return null;
-              }),
-            )
-            .filter(Boolean);
-        }
-      } catch {}
-      obsPhotos = obsPhotos.filter((url) => !taxonPhotos.includes(url));
-      for (let i = taxonPhotos.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [taxonPhotos[i], taxonPhotos[j]] = [taxonPhotos[j], taxonPhotos[i]];
-      }
-      for (let i = obsPhotos.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [obsPhotos[i], obsPhotos[j]] = [obsPhotos[j], obsPhotos[i]];
-      }
-      let selected: string[] = [];
-      let taxonCount = Math.min(2, taxonPhotos.length);
-      let obsCount = Math.min(2, obsPhotos.length);
-      selected = [
-        ...taxonPhotos.slice(0, taxonCount),
-        ...obsPhotos.slice(0, obsCount),
+    // Shuffle taxon photos
+    const shuffledTaxon = [...taxonPhotos];
+    for (let i = shuffledTaxon.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledTaxon[i], shuffledTaxon[j]] = [
+        shuffledTaxon[j],
+        shuffledTaxon[i],
       ];
-      if (selected.length < 4) {
-        let fillTaxon = taxonPhotos.slice(taxonCount);
-        let fillObs = obsPhotos.slice(obsCount);
-        let fill = [...fillTaxon, ...fillObs];
-        for (let i = 0; i < fill.length && selected.length < 4; i++) {
-          if (!selected.includes(fill[i])) selected.push(fill[i]);
-        }
-      }
-      for (let i = selected.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [selected[i], selected[j]] = [selected[j], selected[i]];
-      }
-      return selected;
-    } catch {
-      return [];
     }
+
+    // Shuffle observation photos
+    const shuffledObs = [...observationPhotos];
+    for (let i = shuffledObs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledObs[i], shuffledObs[j]] = [shuffledObs[j], shuffledObs[i]];
+    }
+
+    // Pick 2 taxon photos and 2 observation photos (or as many as available)
+    let selected: string[] = [];
+    let taxonCount = Math.min(2, shuffledTaxon.length);
+    let obsCount = Math.min(2, shuffledObs.length);
+
+    selected = [
+      ...shuffledTaxon.slice(0, taxonCount),
+      ...shuffledObs.slice(0, obsCount),
+    ];
+
+    // Fill up to 4 photos if we have fewer
+    if (selected.length < 4) {
+      let fillTaxon = shuffledTaxon.slice(taxonCount);
+      let fillObs = shuffledObs.slice(obsCount);
+      let fill = [...fillTaxon, ...fillObs];
+      for (let i = 0; i < fill.length && selected.length < 4; i++) {
+        if (!selected.includes(fill[i])) selected.push(fill[i]);
+      }
+    }
+
+    // Final shuffle of selected photos
+    for (let i = selected.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [selected[i], selected[j]] = [selected[j], selected[i]];
+    }
+
+    return selected;
   }
 
   async function startQuizWithMode(modeId: string) {
@@ -127,17 +86,15 @@
       res = await fetch(asset("/plants.json"));
     }
     let data = await res.json();
-    // If mode requires images, fetch images for each plant
+    // If mode requires images, select random images from preprocessed data
     if (
       mode &&
       (mode.id === "image-to-swedish" || mode.id === "imageToNameFreetext")
     ) {
-      data = await Promise.all(
-        data.map(async (plant: any) => {
-          const images = await fetchImagesForPlant(plant);
-          return { ...plant, images };
-        }),
-      );
+      data = data.map((plant: any) => {
+        const images = selectImagesForPlant(plant);
+        return { ...plant, images };
+      });
     }
     if (mode) quiz.start(data, mode);
     loading = false;
