@@ -21,10 +21,22 @@
 
   // Always pick 2 taxon photos and 2 observation photos (fill up to 4)
   // Now uses preprocessed data instead of making API calls
+  // Also handles manually curated photos
   function selectImagesForPlant(plant: {
     taxonPhotos?: string[];
     observationPhotos?: string[];
+    manualPhotos?: string[];
   }) {
+    // If manual photos exist, use those instead
+    if (plant.manualPhotos && plant.manualPhotos.length > 0) {
+      const shuffled = [...plant.manualPhotos];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled.slice(0, 4);
+    }
+
     const taxonPhotos = plant.taxonPhotos || [];
     const observationPhotos = plant.observationPhotos || [];
 

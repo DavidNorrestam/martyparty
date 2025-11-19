@@ -59,7 +59,28 @@ Visit [localhost:5173](http://localhost:5173) (or the port shown in your termina
 
 ### Plant Data Preprocessing
 
-The app uses preprocessed plant data to improve performance and reliability. When you update plant data files in `static/`, run the preprocessing script:
+The app uses preprocessed plant data to improve performance and reliability. There are two ways to preprocess plant data:
+
+#### 1. Interactive Preprocessing (Recommended for Cultivars)
+
+For plants with cultivar names or varieties that need manual image curation:
+
+```sh
+npm run dev
+# Then navigate to http://localhost:5173/preprocess
+```
+
+This provides a web-based UI where you can:
+- Select which plants should be auto-processed vs manually curated
+- Search and select images from Google Images for cultivars
+- See a Google Images-style grid for easy image selection
+- Require at least 10 images per manually curated plant
+
+See [`docs/interactive-preprocessing.md`](docs/interactive-preprocessing.md) for detailed instructions.
+
+#### 2. Command-Line Preprocessing (For Standard Plants)
+
+For standard plants without cultivar names, use the automated script:
 
 ```sh
 npm run preprocess
