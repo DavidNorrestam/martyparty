@@ -14,9 +14,15 @@ const config = {
 		adapter: adapter({
 			pages: 'dist',
 			assets: 'dist',
+			strict: false, // Allow build to succeed even with dynamic routes (they won't be included in static build)
+			fallback: '404.html'
 		}),
 		paths: {
 			base: '/martyparty'
+		},
+		prerender: {
+			entries: ['*', '/quiz', '/result'],
+			handleMissingId: 'warn'
 		}
 	}
 };
