@@ -72,18 +72,18 @@
   <!-- Floating Home Button -->
   <Button
     onclick={() => goto(resolve("/"))}
-    class="floating-home-btn"
+    class="fixed top-8 left-8 z-50 rounded-full px-6 py-3 text-lg shadow-md bg-background text-foreground border border-border transition-all hover:bg-muted hover:shadow-lg max-md:top-4 max-md:left-4 max-md:px-5 max-md:py-2 max-md:text-base"
     aria-label="Hem"
   >
     Hem
   </Button>
 
   {#if loading}
-    <div class="quiz-loading-overlay">
-      <div class="spinner"></div>
-      <div class="loading-text">
-        Laddar frågor<span class="dot one">.</span><span class="dot two">.</span
-        ><span class="dot three">.</span>
+    <div class="fixed inset-0 flex flex-col items-center justify-center bg-background/25 backdrop-blur-[2.5px] z-[200] pointer-events-auto transition-colors">
+      <div class="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin mb-5"></div>
+      <div class="text-xl text-foreground tracking-wide font-medium flex items-center justify-center min-h-[2em]">
+        Laddar frågor<span class="opacity-20 animate-pulse text-xl ml-0.5">.</span><span class="opacity-20 animate-pulse delay-200 text-xl ml-0.5">.</span
+        ><span class="opacity-20 animate-pulse delay-400 text-xl ml-0.5">.</span>
       </div>
     </div>
   {:else if currentState.questions.length && !currentState.finished}
@@ -92,7 +92,7 @@
         style="max-width: 480px; width: 100%; min-height: 420px; box-shadow: 0 2px 16px #0001; position: relative; display: flex; flex-direction: column; justify-content: flex-start;"
       >
         <!-- Progress indicator inside card -->
-        <div class="card-progress-bar">
+        <div class="w-full flex justify-center items-center pt-5 pb-2 bg-transparent max-md:pt-3 max-md:pb-1">
           <QuizProgress
             current={currentState.current + 1}
             total={currentState.questions.length}
@@ -116,113 +116,4 @@
   {/if}
 </main>
 
-<style>
-  :global(.floating-home-btn) {
-    position: fixed;
-    top: 2rem;
-    left: 2rem;
-    z-index: 100;
-    border-radius: 50px;
-    padding: 0.7em 1.5em;
-    font-size: 1.1em;
-    box-shadow: 0 2px 8px #0002;
-    background: #fff;
-    color: #222;
-    border: 1px solid #e5e7eb;
-    transition:
-      background 0.2s,
-      box-shadow 0.2s;
-  }
-  :global(.floating-home-btn:hover) {
-    background: #f3f4f6;
-    box-shadow: 0 4px 16px #0002;
-  }
-  .quiz-loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.25); /* Less opaque */
-    backdrop-filter: blur(2.5px); /* Subtle blur for modern look */
-    z-index: 200;
-    pointer-events: all;
-    transition: background 0.2s;
-  }
-  .spinner {
-    width: 48px;
-    height: 48px;
-    border: 5px solid #e5e7eb;
-    border-top: 5px solid #4f46e5;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 1.2em;
-  }
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  .loading-text {
-    font-size: 1.3em;
-    color: #222;
-    letter-spacing: 0.02em;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2em;
-  }
-  .dot {
-    opacity: 0.2;
-    animation: blink 1.4s infinite both;
-    font-size: 1.3em;
-    margin-left: 0.1em;
-  }
-  .dot.one {
-    animation-delay: 0s;
-  }
-  .dot.two {
-    animation-delay: 0.2s;
-  }
-  .dot.three {
-    animation-delay: 0.4s;
-  }
-  @keyframes blink {
-    0%,
-    80%,
-    100% {
-      opacity: 0.2;
-    }
-    40% {
-      opacity: 1;
-    }
-  }
 
-  .card-progress-bar {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1.2em 0 0.5em 0;
-    background: none;
-  }
-  @media (max-width: 600px) {
-    :global(.floating-home-btn) {
-      top: 1rem;
-      left: 1rem;
-      padding: 0.6em 1.2em;
-      font-size: 1em;
-    }
-    .card-progress-bar {
-      padding: 0.7em 0 0.3em 0;
-    }
-  }
-</style>

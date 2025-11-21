@@ -73,31 +73,30 @@
   }
 </script>
 
-<div class="quiz-result">
-  <h2>Resultat</h2>
-  <div class="progress-container">
+<div class="text-center mt-8 relative z-[1]">
+  <h2 class="text-3xl mb-5">Resultat</h2>
+  <div class="flex justify-center items-center mb-5 relative z-[2]">
     <svg width="120" height="120" viewBox="0 0 120 120">
       <circle
-        class="progress-bg"
+        class="opacity-40"
         cx="60"
         cy="60"
         r="52"
-        stroke="#e5e7eb"
+        stroke="rgb(229, 231, 235)"
         stroke-width="12"
         fill="none"
       />
       <circle
-        class="progress-bar"
+        class="-rotate-90 origin-center transition-[stroke-dashoffset] duration-1000 ease-[cubic-bezier(0.4,2,0.6,1)]"
         cx="60"
         cy="60"
         r="52"
-        stroke="#22c55e"
+        stroke="rgb(34, 197, 94)"
         stroke-width="12"
         fill="none"
         stroke-dasharray={2 * Math.PI * 52}
         stroke-dashoffset={2 * Math.PI * 52 * (1 - percent / 100)}
         stroke-linecap="round"
-        style="transition: stroke-dashoffset 1s cubic-bezier(.4,2,.6,1);"
       />
       <text x="60" y="68" text-anchor="middle" font-size="2.2em" fill="#222">
         {score}
@@ -109,11 +108,11 @@
   </div>
   <p>Du fick <b>{score}</b> av <b>{total}</b> rätt!</p>
   {#if score === total}
-    <div class="congrats">🎉 Perfekt! Alla rätt! 🎉</div>
+    <div class="text-xl text-success mt-5 font-bold tracking-wide animate-[var(--animate-pop)]">🎉 Perfekt! Alla rätt! 🎉</div>
     {#if showConfetti}
       <canvas
         bind:this={confettiCanvas}
-        class="confetti-canvas"
+        class="absolute left-1/2 top-0 -translate-x-1/2 pointer-events-none z-10 w-80 h-45 max-w-full max-h-[40vw]"
         width="320"
         height="180"
         aria-hidden="true"
@@ -122,64 +121,4 @@
   {/if}
 </div>
 
-<style>
-  .quiz-result {
-    text-align: center;
-    margin-top: 2rem;
-    position: relative;
-    z-index: 1;
-  }
-  .quiz-result h2 {
-    font-size: 2rem;
-    margin-bottom: 1.2em;
-  }
-  .progress-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1.2em;
-    position: relative;
-    z-index: 2;
-  }
-  .progress-bg {
-    opacity: 0.4;
-  }
-  .progress-bar {
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
-    transition: stroke-dashoffset 1s cubic-bezier(0.4, 2, 0.6, 1);
-  }
-  .congrats {
-    font-size: 1.3em;
-    color: #22c55e;
-    margin-top: 1.2em;
-    font-weight: bold;
-    letter-spacing: 0.02em;
-    animation: pop 0.7s cubic-bezier(0.4, 2, 0.6, 1);
-  }
-  @keyframes pop {
-    0% {
-      transform: scale(0.7);
-      opacity: 0;
-    }
-    60% {
-      transform: scale(1.15);
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-  .confetti-canvas {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    pointer-events: none;
-    z-index: 10;
-    width: 320px;
-    height: 180px;
-    max-width: 100vw;
-    max-height: 40vw;
-  }
-</style>
+
