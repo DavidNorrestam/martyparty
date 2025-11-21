@@ -172,6 +172,45 @@ This project encourages and supports AI-assisted workflows:
 
 This project is licensed under the [MIT License](LICENSE).
 
+## Code Quality
+
+This project uses modern code quality tools to maintain high standards:
+
+- **ESLint**: Linting for TypeScript and Svelte files
+  ```sh
+  npm run lint        # Check for issues
+  npm run lint:fix    # Auto-fix issues
+  ```
+
+- **Prettier**: Automatic code formatting
+  ```sh
+  npm run format        # Format all files
+  npm run format:check  # Check formatting
+  ```
+
+- **TypeScript**: Strict type checking
+  ```sh
+  npm run check        # Type check
+  npm run check:watch  # Watch mode
+  ```
+
+## Testing
+
+The project uses Vitest for unit and component testing:
+
+```sh
+# Run tests once
+npm test
+
+# Run tests with UI
+npm test:ui
+
+# Run tests with coverage
+npm test:coverage
+```
+
+Tests are located alongside source files with `.test.ts` or `.spec.ts` extensions.
+
 ## Contact
 
 For questions, suggestions, or support, open an issue or contact [David Norrestam](https://github.com/DavidNorrestam).
@@ -187,56 +226,3 @@ _Happy learning and building!_
 - [Architecture Overview](docs/architecture.md)
 - [AI Task Guide](docs/ai-tasks.md)
 - [AI-Driven Development Guide](docs/ai-development.md)
-# sv
-
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-
-
-## Deploying to GitHub Pages
-
-1. Install the `gh-pages` package if you haven't already:
-	```sh
-	npm install --save-dev gh-pages
-	```
-2. Build and deploy:
-	```sh
-	npm run deploy
-	```
-3. In your repository settings on GitHub, set Pages to deploy from the `gh-pages` branch.
-
-The app will be available at `https://<your-username>.github.io/<REPO_NAME>/`.

@@ -1,29 +1,6 @@
 
 import { writable } from 'svelte/store';
-import type { GameMode, BaseQuestion } from '../gameModes';
-
-export interface Plant {
-    swedishName: string;
-    latinName: string;
-    images?: string[];
-    [key: string]: any;
-}
-
-
-export interface QuizAnswer<Q extends BaseQuestion = BaseQuestion> {
-    answer: string;
-    correct: boolean;
-    question: Q;
-}
-
-export interface QuizState<Q extends BaseQuestion = BaseQuestion> {
-    questions: Q[];
-    current: number;
-    score: number;
-    answers: QuizAnswer<Q>[];
-    finished: boolean;
-    mode?: GameMode<Q>;
-}
+import type { GameMode, BaseQuestion, Plant, QuizAnswer, QuizState } from '../types';
 
 
 function createQuizStore() {

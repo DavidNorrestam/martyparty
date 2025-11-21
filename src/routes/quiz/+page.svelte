@@ -105,7 +105,7 @@
               options={getOptions(currentState.current)}
               {mode}
               {loadingImages}
-              on:answer={(e) => handleAnswer(e.detail)}
+              onanswer={handleAnswer}
             />
           {/if}
         </CardContent>

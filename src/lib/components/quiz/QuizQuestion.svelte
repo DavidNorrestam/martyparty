@@ -3,24 +3,23 @@
   import QuizQuestionImage from "./questions/QuizQuestionImage.svelte";
   import QuizQuestionText from "./questions/QuizQuestionText.svelte";
   import QuizQuestionFreetext from "./questions/QuizQuestionFreetext.svelte";
-  import { createEventDispatcher } from "svelte";
 
   let {
     question,
     options,
     mode,
     loadingImages = false,
+    onanswer
   } = $props<{
-    question: any;
+    question: { swedishName: string; latinName: string; images?: string[] };
     options: string[];
     mode: GameMode;
     loadingImages?: boolean;
+    onanswer?: (answer: string) => void;
   }>();
 
-  const dispatch = createEventDispatcher();
-
   function handleAnswer(answer: string) {
-    dispatch("answer", answer);
+    onanswer?.(answer);
   }
 </script>
 

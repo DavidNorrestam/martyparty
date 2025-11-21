@@ -1,14 +1,5 @@
 import { asset } from "$app/paths";
-
-export interface Plant {
-    swedishName: string;
-    latinName: string;
-    images?: string[];
-    taxonPhotos?: string[];
-    observationPhotos?: string[];
-    manualPhotos?: string[];
-    [key: string]: any;
-}
+import type { Plant } from "../types";
 
 /**
  * Selects a mix of taxon and observation photos for a plant.
