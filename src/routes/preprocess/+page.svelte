@@ -4,17 +4,11 @@
     import { resolve, base } from "$app/paths";
     import { dev } from "$app/environment";
     import { Button } from "$lib/components/ui/button";
-    import {
-        Card,
-        CardContent,
-        CardDescription,
-        CardHeader,
-        CardTitle,
-    } from "$lib/components/ui/card";
-    import { Input } from "$lib/components/ui/input";
-    import { Progress } from "$lib/components/ui/progress";
-    import CheckIcon from "@lucide/svelte/icons/check";
-    import LoaderIcon from "@lucide/svelte/icons/loader-circle";
+    
+    import PreprocessFileSelection from "$lib/components/preprocess/PreprocessFileSelection.svelte";
+    import PreprocessPlantSelection from "$lib/components/preprocess/PreprocessPlantSelection.svelte";
+    import PreprocessImageSelection from "$lib/components/preprocess/PreprocessImageSelection.svelte";
+    import PreprocessProcessing from "$lib/components/preprocess/PreprocessProcessing.svelte";
 
     interface PlantFile {
         filename: string;
@@ -63,35 +57,22 @@
     let processingStatus = $state("");
     let processingProgress = $state(0);
 
-	onMount(async () => {
-		// Redirect to home if not in development mode
-		if (!dev) {
-			goto(resolve('/'));
-			return;
-		}
-		
-		try {
-			const response = await fetch(resolve('/api/preprocess'));
-			if (!response.ok) {
-				throw new Error('Failed to load files');
-			}
-			const data = await response.json();
-			files = data.files;
-		} catch (e) {
-			error = e instanceof Error ? e.message : 'Unknown error';
-		} finally {
-			loading = false;
-		}
-	});onMount(async () => {
+    onMount(async () => {
+        // Redirect to home if not in development mode
+        if (!dev) {
+            goto(resolve('/'));
+            return;
+        }
+        
         try {
-            const response = await fetch(resolve("/api/preprocess"));
+            const response = await fetch(resolve('/api/preprocess'));
             if (!response.ok) {
-                throw new Error("Failed to load files");
+                throw new Error('Failed to load files');
             }
             const data = await response.json();
             files = data.files;
         } catch (e) {
-            error = e instanceof Error ? e.message : "Unknown error";
+            error = e instanceof Error ? e.message : 'Unknown error';
         } finally {
             loading = false;
         }
@@ -132,6 +113,10 @@
 
     function deselectAllPlants() {
         selectedPlantIndices = new Set();
+    }
+
+    function getManualPlants() {
+        return plants.filter((_, i) => !selectedPlantIndices.has(i));
     }
 
     async function proceedToImageSelection() {
@@ -186,11 +171,19 @@
         } else {
             newSelection.add(url);
         }
-        selectedImages = newSelection; // Create new Set to trigger reactivity
+        selectedImages = newSelection;
     }
 
-    function getManualPlants() {
-        return plants.filter((_, i) => !selectedPlantIndices.has(i));
+    function addManualImage(url: string) {
+        const newSelection = new Set(selectedImages);
+        newSelection.add(url);
+        selectedImages = newSelection;
+    }
+
+    function removeManualImage(url: string) {
+        const newSelection = new Set(selectedImages);
+        newSelection.delete(url);
+        selectedImages = newSelection;
     }
 
     async function saveImagesAndContinue() {
@@ -295,337 +288,44 @@
     {/if}
 
     {#if currentStep === "file-selection"}
-        <div>
-            <p class="text-muted-foreground mb-4">
-                Select a plant file to preprocess. Files that have already been
-                preprocessed are marked with a checkmark.
-            </p>
-
-            <div class="grid gap-4">
-                {#each files as file}
-                    <Card
-                        class="cursor-pointer hover:border-primary transition-colors"
-                        onclick={() => selectFile(file.filename)}
-                    >
-                        <CardHeader>
-                            <CardTitle
-                                class="flex items-center justify-between"
-                            >
-                                <span>{file.filename}</span>
-                                {#if file.isPreprocessed}
-                                    <span
-                                        class="flex items-center gap-2 text-sm font-normal text-green-600"
-                                    >
-                                        <CheckIcon class="w-4 h-4" />
-                                        Preprocessed
-                                    </span>
-                                {/if}
-                            </CardTitle>
-                            <CardDescription>
-                                {file.plantCount} plants
-                            </CardDescription>
-                        </CardHeader>
-                    </Card>
-                {/each}
-            </div>
-        </div>
+        <PreprocessFileSelection {files} onselect={selectFile} />
     {:else if currentStep === "plant-selection"}
-        <div>
-            <Button variant="outline" onclick={reset} class="mb-4">
-                ← Back to file selection
-            </Button>
-
-            <Card class="mb-4">
-                <CardHeader>
-                    <CardTitle>Select Plants for Automatic Processing</CardTitle
-                    >
-                    <CardDescription>
-                        Plants that are selected will be automatically processed
-                        using iNaturalist API. Deselect plants that need manual
-                        image curation (e.g., cultivars).
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div class="flex gap-2 mb-4">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onclick={selectAllPlants}>Select All</Button
-                        >
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onclick={deselectAllPlants}>Deselect All</Button
-                        >
-                    </div>
-
-                    <div class="space-y-2">
-                        {#each plants as plant, i}
-                            <label
-                                class="flex items-center gap-3 p-3 rounded-md border cursor-pointer hover:bg-muted/50 transition-colors"
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={selectedPlantIndices.has(i)}
-                                    onchange={() => togglePlant(i)}
-                                    class="w-4 h-4 cursor-pointer"
-                                />
-                                <div class="flex-1">
-                                    <p class="font-medium">{plant.latinName}</p>
-                                    <p class="text-sm text-muted-foreground">
-                                        {plant.swedishName}
-                                    </p>
-                                </div>
-                            </label>
-                        {/each}
-                    </div>
-
-                    <div class="mt-6 p-4 bg-muted rounded-md">
-                        <p class="text-sm">
-                            <strong>Selected for auto-processing:</strong>
-                            {selectedPlantIndices.size} / {plants.length}
-                            <br />
-                            <strong>Manual curation needed:</strong>
-                            {plants.length - selectedPlantIndices.size}
-                        </p>
-                    </div>
-
-                    <Button
-                        onclick={proceedToImageSelection}
-                        class="mt-4 w-full"
-                    >
-                        Continue to Image Selection
-                    </Button>
-                </CardContent>
-            </Card>
-        </div>
+        <PreprocessPlantSelection
+            {plants}
+            {selectedPlantIndices}
+            onback={reset}
+            oncontinue={proceedToImageSelection}
+            ontoggle={togglePlant}
+            onselectall={selectAllPlants}
+            ondeselectall={deselectAllPlants}
+        />
     {:else if currentStep === "image-selection"}
         {@const plant = plants[currentPlantIndex]}
         {@const manualPlantsList = getManualPlants()}
         {@const currentManualIndex = manualPlantsList.indexOf(plant)}
-
-        <div>
-            <Button
-                variant="outline"
-                onclick={() => (currentStep = "plant-selection")}
-                class="mb-4"
-            >
-                ← Back to plant selection
-            </Button>
-
-            <Card class="mb-4">
-                <CardHeader>
-                    <CardTitle>Select Images for {plant.latinName}</CardTitle>
-                    <CardDescription>
-                        {plant.swedishName} • Plant {currentManualIndex + 1} of {manualPlantsList.length}
-                        <br />
-                        <span
-                            class="text-xs bg-muted px-2 py-1 rounded mt-2 inline-block"
-                        >
-                            Search query: "{plant.latinName}"
-                        </span>
-                        <br />
-                        Select at least 10 representative images. Click on images
-                        to select/deselect.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div class="mb-4 p-4 bg-muted rounded-md">
-                        <p class="text-sm">
-                            <strong>Selected:</strong>
-                            {selectedImages.size} / minimum 10
-                        </p>
-                        <Progress
-                            value={(selectedImages.size / 10) * 100}
-                            class="mt-2"
-                        />
-                    </div>
-
-                    <div
-                        class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-md"
-                    >
-                        <p class="text-sm font-semibold mb-2">
-                            Manual Image URL Entry
-                        </p>
-                        <p class="text-xs text-muted-foreground mb-2">
-                            If automatic search isn't working, search Google
-                            Images manually and paste image URLs here:
-                        </p>
-                        <div class="flex gap-2">
-                            <Input
-                                type="text"
-                                placeholder="Paste image URL and press Enter"
-                                onkeydown={(e) => {
-                                    if (e.key === "Enter") {
-                                        const input = e.currentTarget;
-                                        const url = input.value.trim();
-                                        if (
-                                            url &&
-                                            (url.startsWith("http://") ||
-                                                url.startsWith("https://"))
-                                        ) {
-                                            const newSelection = new Set(
-                                                selectedImages,
-                                            );
-                                            newSelection.add(url);
-                                            selectedImages = newSelection;
-                                            input.value = "";
-                                        }
-                                    }
-                                }}
-                                class="flex-1"
-                            />
-                        </div>
-                        <p class="text-xs text-muted-foreground mt-2">
-                            Tip: Right-click image in Google → "Copy image
-                            address"
-                        </p>
-                    </div>
-
-                    {#if loadingImages}
-                        <div class="flex items-center justify-center py-12">
-                            <LoaderIcon
-                                class="w-8 h-8 animate-spin text-muted-foreground"
-                            />
-                        </div>
-                    {:else if imageResults.length === 0 && selectedImages.size === 0}
-                        <p class="text-muted-foreground text-center py-12">
-                            No images found automatically. Use the manual URL
-                            entry above.
-                        </p>
-                    {:else if imageResults.length === 0}
-                        <div class="mb-4">
-                            <p class="text-sm font-semibold mb-2">
-                                Manually Added Images ({selectedImages.size})
-                            </p>
-                            <div class="space-y-2">
-                                {#each Array.from(selectedImages) as url}
-                                    <div
-                                        class="flex items-center gap-2 p-2 bg-muted rounded-md"
-                                    >
-                                        <CheckIcon
-                                            class="w-4 h-4 text-green-600 flex-shrink-0"
-                                        />
-                                        <span class="text-xs truncate flex-1"
-                                            >{url}</span
-                                        >
-                                        <button
-                                            type="button"
-                                            onclick={() => {
-                                                const newSelection = new Set(
-                                                    selectedImages,
-                                                );
-                                                newSelection.delete(url);
-                                                selectedImages = newSelection;
-                                            }}
-                                            class="text-destructive hover:text-destructive/80 text-xs"
-                                        >
-                                            Remove
-                                        </button>
-                                    </div>
-                                {/each}
-                            </div>
-                        </div>
-                    {:else}
-                        <div
-                            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-                        >
-                            {#each imageResults as image}
-                                <button
-                                    type="button"
-                                    class="relative cursor-pointer group text-left"
-                                    onclick={() => toggleImage(image.url)}
-                                >
-                                    <div
-                                        class="aspect-square rounded-md overflow-hidden border-2 {selectedImages.has(
-                                            image.url,
-                                        )
-                                            ? 'border-primary'
-                                            : 'border-transparent'} hover:border-primary/50 transition-colors"
-                                    >
-                                        <img
-                                            src={image.thumbnail}
-                                            alt={image.title || plant.latinName}
-                                            class="w-full h-full object-cover"
-                                            loading="lazy"
-                                        />
-                                    </div>
-                                    {#if selectedImages.has(image.url)}
-                                        <div
-                                            class="absolute top-2 right-2 bg-primary rounded-full p-1"
-                                        >
-                                            <CheckIcon
-                                                class="w-4 h-4 text-primary-foreground"
-                                            />
-                                        </div>
-                                    {/if}
-                                    <a
-                                        href={image.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="text-xs text-muted-foreground hover:text-foreground mt-1 block truncate"
-                                        onclick={(e) => e.stopPropagation()}
-                                    >
-                                        {image.source}
-                                    </a>
-                                </button>
-                            {/each}
-                        </div>
-                    {/if}
-
-                    <Button
-                        onclick={saveImagesAndContinue}
-                        disabled={selectedImages.size < 10}
-                        class="mt-6 w-full"
-                    >
-                        {currentManualIndex < manualPlantsList.length - 1
-                            ? "Next Plant"
-                            : "Start Processing"}
-                    </Button>
-                </CardContent>
-            </Card>
-        </div>
-    {:else if currentStep === "processing"}
-        <Card>
-            <CardHeader>
-                <CardTitle>Processing Plants...</CardTitle>
-                <CardDescription>{processingStatus}</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Progress value={processingProgress} />
-                <div class="flex items-center justify-center py-8">
-                    <LoaderIcon
-                        class="w-8 h-8 animate-spin text-muted-foreground"
-                    />
-                </div>
-            </CardContent>
-        </Card>
-    {:else if currentStep === "complete"}
-        <Card>
-            <CardHeader>
-                <CardTitle class="flex items-center gap-2">
-                    <CheckIcon class="w-6 h-6 text-green-600" />
-                    Preprocessing Complete!
-                </CardTitle>
-                <CardDescription>
-                    Successfully preprocessed {selectedFile}
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div class="space-y-2">
-                    <p class="text-sm">
-                        <strong>Auto-processed plants:</strong>
-                        {selectedPlantIndices.size}
-                        <br />
-                        <strong>Manually curated plants:</strong>
-                        {manualPlants.length}
-                    </p>
-
-                    <Button onclick={reset} class="mt-4">
-                        Process Another File
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
+        
+        <PreprocessImageSelection
+            {plant}
+            {currentManualIndex}
+            totalManualPlants={manualPlantsList.length}
+            {selectedImages}
+            {imageResults}
+            {loadingImages}
+            onback={() => (currentStep = "plant-selection")}
+            ontoggle={toggleImage}
+            onaddmanual={addManualImage}
+            onremovemanual={removeManualImage}
+            oncontinue={saveImagesAndContinue}
+        />
+    {:else if currentStep === "processing" || currentStep === "complete"}
+        <PreprocessProcessing
+            status={processingStatus}
+            progress={processingProgress}
+            isComplete={currentStep === "complete"}
+            {selectedFile}
+            autoCount={selectedPlantIndices.size}
+            manualCount={manualPlants.length}
+            onreset={reset}
+        />
     {/if}
 </div>

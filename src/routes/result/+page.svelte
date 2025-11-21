@@ -23,22 +23,15 @@
     }
   }
 
+  import { fetchPlantData } from "$lib/utils/game-logic";
+
   async function tryAgain() {
     // Always use the current mode from the quiz store
     const currentMode = $quiz.mode;
     if (!currentMode) return;
-    const res = await fetch(asset("/plants.json"));
-    let data = await res.json();
-    // If image-to-swedish mode, fetch images for each plant (mimic quiz/+page.svelte logic)
-    if (currentMode.id === "image-to-swedish") {
-      // Optionally, refactor to share logic with quiz/+page.svelte
-      data = await Promise.all(
-        data.map(async (plant: any) => {
-          // Fallback: just pass through images if present
-          return { ...plant, images: plant.images || [] };
-        }),
-      );
-    }
+    
+    const data = await fetchPlantData(currentMode.id);
+    
     quiz.start(data, currentMode);
     goto(`${resolve("/quiz")}?mode=${currentMode.id}`);
   }
