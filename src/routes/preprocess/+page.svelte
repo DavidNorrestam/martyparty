@@ -54,6 +54,15 @@
     let plants = $state<Plant[]>([]);
     let selectedPlantIndices = $state<Set<number>>(new Set());
 
+    // Image selection & Processing
+    let currentPlantIndex = $state(0);
+    let manualPlants = $state<{latinName: string, swedishName: string, photos: string[]}[]>([]);
+    let selectedImages = $state<Set<string>>(new Set());
+    let imageResults = $state<GoogleImage[]>([]);
+    let loadingImages = $state(false);
+    let processingStatus = $state("");
+    let processingProgress = $state(0);
+
 	onMount(async () => {
 		// Redirect to home if not in development mode
 		if (!dev) {

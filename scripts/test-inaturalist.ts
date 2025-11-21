@@ -5,7 +5,7 @@
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import { join } from 'path';
-import { delay } from './preprocess-utils.js';
+import { fetchINaturalistPhotos, delay } from '../src/lib/preprocess-utils.js';
 
 interface PlantData {
     swedishName: string;

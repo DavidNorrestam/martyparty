@@ -1,6 +1,6 @@
 <script lang="ts">
   import { quiz } from "$lib/stores/quiz";
-  import QuizResult from "$lib/QuizResult.svelte";
+  import QuizResult from "$lib/components/quiz/QuizResult.svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { get } from "svelte/store";
@@ -8,7 +8,7 @@
   import Card from "$lib/components/ui/card/card.svelte";
   import CardContent from "$lib/components/ui/card/card-content.svelte";
   import Button from "$lib/components/ui/button/button.svelte";
-  import QuizProgress from "$lib/QuizProgress.svelte";
+  import QuizProgress from "$lib/components/quiz/QuizProgress.svelte";
   $: score = $quiz.score;
   $: total = $quiz.questions.length;
   $: mode = $quiz.mode;

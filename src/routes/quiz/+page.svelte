@@ -2,8 +2,8 @@
   import { quiz } from "$lib/stores/quiz";
   import { gameModes, type GameMode } from "$lib/gameModes";
   import { goto } from "$app/navigation";
-  import QuizQuestion from "$lib/QuizQuestion.svelte";
-  import QuizProgress from "$lib/QuizProgress.svelte";
+  import QuizQuestion from "$lib/components/quiz/QuizQuestion.svelte";
+  import QuizProgress from "$lib/components/quiz/QuizProgress.svelte";
   import { page } from "$app/stores";
   import { get } from "svelte/store";
   import { asset, resolve } from "$app/paths";

@@ -5,7 +5,7 @@
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import { join } from 'path';
-import { cleanLatinName, getAcceptedName, delay, fetchINaturalistPhotos, type WFOData, type INaturalistPhotos } from './preprocess-utils.js';
+import { cleanLatinName, getAcceptedName, fetchINaturalistPhotos, delay, type WFOData, type INaturalistPhotos } from '../src/lib/preprocess-utils.js';
 
 interface PlantInput {
     swedishName: string;

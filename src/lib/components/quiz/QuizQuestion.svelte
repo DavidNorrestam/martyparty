@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button/index.js";
   import { Input } from "$lib/components/ui/input";
   import * as Carousel from "$lib/components/ui/carousel/index.js";
-  import type { GameMode } from "./gameModes";
+  import type { GameMode } from "$lib/gameModes";
   export let question: {
     swedishName: string;
     latinName: string;
