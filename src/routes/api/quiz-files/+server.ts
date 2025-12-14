@@ -2,6 +2,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
+export const prerender = true;
+
 /**
  * GET: List all available plant quiz files
  */

@@ -21,7 +21,7 @@ const config = {
 			base: '/martyparty'
 		},
 		prerender: {
-			entries: ['*', '/quiz', '/result'],
+			entries: ['*', '/quiz', '/result', '/api/quiz-files'],
 			handleMissingId: 'warn'
 		}
 	}
