@@ -64,13 +64,22 @@ function shuffleArray(array: any[]) {
  * Fetches plant data, preferring preprocessed data but falling back to original.
  * Optionally processes images for specific modes.
  */
-export async function fetchPlantData(modeId?: string): Promise<Plant[]> {
+export async function fetchPlantData(modeId?: string, weekFile?: string): Promise<Plant[]> {
+    // Determine the base filename
+    const filename = weekFile || "plants.json";
+
     // Try to load preprocessed data first, fall back to original if not available
-    let res = await fetch(asset("/preprocessed/plants.json"));
+    let res = await fetch(asset(`/preprocessed/${filename}`));
     if (!res.ok) {
-        console.warn("Preprocessed data not found, falling back to original");
-        res = await fetch(asset("/plants.json"));
+        console.warn(`Preprocessed data for ${filename} not found, falling back to original`);
+        res = await fetch(asset(`/${filename}`));
     }
+
+    if (!res.ok) {
+        console.error(`Failed to load plant data from ${filename}`);
+        return [];
+    }
+
     let data = await res.json();
 
     // If mode requires images, select random images from preprocessed data

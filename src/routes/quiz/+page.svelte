@@ -21,13 +21,13 @@
 
   import { fetchPlantData } from "$lib/utils/game-logic";
 
-  async function startQuizWithMode(modeId: string) {
+  async function startQuizWithMode(modeId: string, weekFile?: string) {
     const foundMode = gameModes.find((m) => m.id === modeId) || gameModes[0];
     mode = foundMode;
     selectedModeId = mode.id;
     loading = true;
     
-    const data = await fetchPlantData(mode.id);
+    const data = await fetchPlantData(mode.id, weekFile);
     
     if (mode) quiz.start(data, mode);
     loading = false;
@@ -35,11 +35,14 @@
 
   import { onMount } from "svelte";
   onMount(() => {
-    // Read mode from query param
-    const urlMode = get(page).url.searchParams.get("mode");
+    // Read mode and week from query param
+    const urlParams = get(page).url.searchParams;
+    const urlMode = urlParams.get("mode");
+    const urlWeek = urlParams.get("week") || undefined;
+    
     const initialModeId = urlMode || gameModes[0].id;
     selectedModeId = initialModeId;
-    startQuizWithMode(initialModeId);
+    startQuizWithMode(initialModeId, urlWeek);
 
     const unsub = quiz.subscribe((state) => {
       if (state.finished) {
