@@ -1,42 +1,42 @@
 [
     {
-        "swedishName": "Idegran",
-        "latinName": "Taxus baccata"
+        "swedishName": "Coloradogran",
+        "latinName": "Abies concolor"
     },
     {
-        "swedishName": "Hemlock",
-        "latinName": "Tsuga canadensis"
+        "swedishName": "Nordmannsgran",
+        "latinName": "Abies nordmanniana"
     },
     {
-        "swedishName": "Mammutträd",
-        "latinName": "Sequoiadendron giganteum"
+        "swedishName": "Blå ädelcypress",
+        "latinName": "Chamaecyparis lawsoniana 'Alumii'"
     },
     {
-        "swedishName": "Svarttall",
-        "latinName": "Pinus nigra"
+        "swedishName": "Dvärgtrådcypress",
+        "latinName": "Chamaecyparis lawsoniana 'Filifera Nana'"
     },
     {
-        "swedishName": "Tall",
-        "latinName": "Pinus sylvestris"
+        "swedishName": "Ginkgo",
+        "latinName": "Ginkgo biloba"
     },
     {
-        "swedishName": "Blågran",
-        "latinName": "Picea pungens Glauca-Gruppen"
+        "swedishName": "Kinesisk sekvoja",
+        "latinName": "Metasequoia glyptostroboides"
     },
     {
-        "swedishName": "Europeisk lärk",
-        "latinName": "Larix decidua"
+        "swedishName": "Gran (rödgran)",
+        "latinName": "Picea abies"
     },
     {
-        "swedishName": "Himalayaceder",
-        "latinName": "Cedrus deodara"
+        "swedishName": "Fågelbogran",
+        "latinName": "Picea abies 'Nidiformis'"
     },
     {
-        "swedishName": "En",
-        "latinName": "Juniperus communis"
+        "swedishName": "Bergtall",
+        "latinName": "Pinus mugo"
     },
     {
-        "swedishName": "Koreagran",
-        "latinName": "Abies koreana"
+        "swedishName": "Jättetuja",
+        "latinName": "Thuja plicata"
     }
 ]
