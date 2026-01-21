@@ -48,7 +48,7 @@
           Search query: "{plant.latinName}"
         </span>
         <br />
-        Select at least 10 representative images. Click on images to
+        Select at least 4 representative images. Click on images to
         select/deselect.
       </CardDescription>
     </CardHeader>
@@ -56,9 +56,9 @@
       <div class="mb-4 p-4 bg-muted rounded-md">
         <p class="text-sm">
           <strong>Selected:</strong>
-          {selectedImages.size} / minimum 10
+          {selectedImages.size} / minimum 4
         </p>
-        <Progress value={(selectedImages.size / 10) * 100} class="mt-2" />
+        <Progress value={(selectedImages.size / 4) * 100} class="mt-2" />
       </div>
 
       <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-md">
@@ -165,7 +165,7 @@
 
       <Button
         onclick={oncontinue}
-        disabled={selectedImages.size < 10}
+        disabled={selectedImages.size < 4}
         class="mt-6 w-full"
       >
         {currentManualIndex < totalManualPlants - 1
