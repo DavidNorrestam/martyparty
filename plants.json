@@ -1,42 +1,42 @@
 [
     {
-        "swedishName": "Skogslönn",
-        "latinName": "Acer platanoides"
+        "swedishName": "Avenbok",
+        "latinName": "Carpinus betulus"
     },
     {
-        "swedishName": "Tysklönn",
-        "latinName": "Acer pseudoplatanus"
+        "swedishName": "Havtorn",
+        "latinName": "Hippohae rhamnoides"
     },
     {
-        "swedishName": "Hästkastanj",
-        "latinName": "Aesculus hippocastanum"
+        "swedishName": "Blåtry",
+        "latinName": "Lonicera caerulea"
     },
     {
-        "swedishName": "Klibbal",
-        "latinName": "Alnus glutinosa"
+        "swedishName": "Magnolia",
+        "latinName": "Magnolia sp."
     },
     {
-        "swedishName": "Gråal",
-        "latinName": "Alnus incana"
+        "swedishName": "Slån",
+        "latinName": "Prunus spinosa"
     },
     {
-        "swedishName": "Vårtbjörk",
-        "latinName": "Betula pendula"
+        "swedishName": "Rönnsumak",
+        "latinName": "Rhus typhina"
     },
     {
-        "swedishName": "Bok",
-        "latinName": "Fagus sylvatica"
+        "swedishName": "Sälg",
+        "latinName": "Salix caprea"
     },
     {
-        "swedishName": "Ask",
-        "latinName": "Fraxinus excelsior"
+        "swedishName": "Fläder",
+        "latinName": "Sambucus nigra"
     },
     {
-        "swedishName": "Skogsek",
-        "latinName": "Quercus robur"
+        "swedishName": "Snöbär",
+        "latinName": "Symphoricarpos albus ssp. laevigatus"
     },
     {
-        "swedishName": "Skogslind",
-        "latinName": "Tilia cordata"
+        "swedishName": "Syren",
+        "latinName": "Syringa vulgaris"
     }
 ]

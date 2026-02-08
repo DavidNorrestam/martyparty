@@ -1,0 +1,42 @@
+[
+    {
+        "swedishName": "Skogslönn",
+        "latinName": "Acer platanoides"
+    },
+    {
+        "swedishName": "Tysklönn",
+        "latinName": "Acer pseudoplatanus"
+    },
+    {
+        "swedishName": "Hästkastanj",
+        "latinName": "Aesculus hippocastanum"
+    },
+    {
+        "swedishName": "Klibbal",
+        "latinName": "Alnus glutinosa"
+    },
+    {
+        "swedishName": "Gråal",
+        "latinName": "Alnus incana"
+    },
+    {
+        "swedishName": "Vårtbjörk",
+        "latinName": "Betula pendula"
+    },
+    {
+        "swedishName": "Bok",
+        "latinName": "Fagus sylvatica"
+    },
+    {
+        "swedishName": "Ask",
+        "latinName": "Fraxinus excelsior"
+    },
+    {
+        "swedishName": "Skogsek",
+        "latinName": "Quercus robur"
+    },
+    {
+        "swedishName": "Skogslind",
+        "latinName": "Tilia cordata"
+    }
+]
