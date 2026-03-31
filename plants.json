@@ -1,42 +1,42 @@
 [
     {
-        "swedishName": "Hästkastanj",
-        "latinName": "Aesculus hippocastanum"
+        "swedishName": "Skogslönn",
+        "latinName": "Acer platanoides"
     },
     {
-        "swedishName": "Vårtbjörk",
-        "latinName": "Betula pendula"
+        "swedishName": "Klotlönn",
+        "latinName": "Acer platanoides 'Globosum'"
     },
     {
-        "swedishName": "Tårbjörk",
-        "latinName": "Betula pendula 'Youngii'"
+        "swedishName": "Tysklönn",
+        "latinName": "Acer pseudoplatanus"
     },
     {
-        "swedishName": "Katsura (pepparkaksträd)",
-        "latinName": "Cercidiphyllum japonicum"
+        "swedishName": "Ask",
+        "latinName": "Fraxinus excelsior"
     },
     {
-        "swedishName": "Tulpanträd",
-        "latinName": "Liriodendron tulipifera"
+        "swedishName": "Valnöt",
+        "latinName": "Juglans regia"
     },
     {
-        "swedishName": "Praktmagnolia",
-        "latinName": "Magnolia x soulangeana"
+        "swedishName": "Platan",
+        "latinName": "Platanus x hispanica"
     },
     {
-        "swedishName": "Äpple",
-        "latinName": "Malus domestica"
+        "swedishName": "Bergkörsbär",
+        "latinName": "Prunus sargentii"
     },
     {
-        "swedishName": "Kejsarträd",
-        "latinName": "Paulownia tomentosa"
+        "swedishName": "Vitpil",
+        "latinName": "Salix alba"
     },
     {
-        "swedishName": "Hägg",
-        "latinName": "Prunus padus"
+        "swedishName": "Korallpil",
+        "latinName": "Salix x fragilis f. vitellina 'Chermesina'"
     },
     {
-        "swedishName": "Robinia",
-        "latinName": "Robinia pseudoacacia"
+        "swedishName": "Skogslind",
+        "latinName": "Tilia cordata"
     }
 ]
